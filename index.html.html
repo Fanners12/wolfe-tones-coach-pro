@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#006400">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="WT Coach Pro">
+<title>Wolfe Tones GAA Coach Pro</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --green: #006400;
+    --green-light: #008000;
+    --green-dark: #004d00;
+    --gold: #FFB800;
+    --gold-dark: #cc9200;
+    --white: #ffffff;
+    --off-white: #f5f5f0;
+    --river: #0070C0;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light-gray: #e8e8e0;
+    --card-bg: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,100,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--off-white);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 60%, var(--green-light) 100%);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
+  .crest-svg {
+    width: 48px;
+    height: 54px;
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--gold);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  .header-text p {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .sport-toggle {
+    margin-left: auto;
+    display: flex;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .sport-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+
+  .sport-btn.active {
+    background: var(--gold);
+    color: var(--green-dark);
+  }
+
+  /* ── NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--green-dark);
+    display: flex;
+    z-index: 100;
+    border-top: 2px solid var(--gold);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .nav-item.active {
+    color: var(--gold);
+  }
+
+  .nav-item svg { width: 22px; height: 22px; }
+
+  /* ── SCREENS ── */
+  .screen { display: none; padding: 16px; }
+  .screen.active { display: block; }
+
+  /* ── HOME ── */
+  .home-hero {
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    border-radius: var(--radius);
+    padding: 20px;
+    color: white;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-hero::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255,184,0,0.1);
+    border-radius: 50%;
+  }
+
+  .home-hero h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .home-hero p { font-size: 0.85rem; opacity: 0.85; }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .quick-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    border-left: 4px solid var(--green);
+    transition: transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quick-card:active { transform: scale(0.97); }
+  .quick-card.gold { border-left-color: var(--gold); }
+  .quick-card.river { border-left-color: var(--river); }
+
+  .quick-card-icon { font-size: 1.6rem; }
+  .quick-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--green-dark); }
+  .quick-card p { font-size: 0.72rem; color: var(--mid); }
+
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  /* ── DRILL LIBRARY ── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    flex-shrink: 0;
+    background: white;
+    border: 1.5px solid var(--light-gray);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    color: var(--mid);
+  }
+
+  .filter-chip.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .drill-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .drill-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .drill-card:active { transform: scale(0.98); }
+
+  .drill-canvas-wrap {
+    background: #1a4a1a;
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drill-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .drill-info {
+    padding: 12px;
+  }
+
+  .drill-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-green { background: #e8f5e8; color: var(--green-dark); }
+  .badge-gold { background: #fff8e1; color: #8a6000; }
+  .badge-blue { background: #e3f2fd; color: #0055aa; }
+  .badge-red { background: #fce8e8; color: #aa0000; }
+
+  .drill-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 4px; color: var(--dark); }
+  .drill-desc { font-size: 0.75rem; color: var(--mid); line-height: 1.5; }
+
+  /* ── DRILL MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: flex-end;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-sheet {
+    background: white;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 20px;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--light-gray);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .modal-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+
+  .modal-canvas-wrap {
+    background: #1a4a1a;
+    border-radius: var(--radius);
+    height: 200px;
+    margin: 12px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .modal-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .anim-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .anim-btn {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+
+  .anim-btn.secondary {
+    background: var(--light-gray);
+    color: var(--dark);
+  }
+
+  .detail-section { margin-bottom: 14px; }
+  .detail-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .detail-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .detail-list li {
+    font-size: 0.8rem;
+    color: var(--mid);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .detail-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  .close-modal {
+    width: 100%;
+    background: var(--green-dark);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 13px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TACTICAL BOARD ── */
+  .pitch-wrapper {
+    background: #1a4a1a;
+    border-radius: var(--radius);
+    padding: 10px;
+    margin-bottom: 14px;
+    touch-action: none;
+  }
+
+  #tacticalCanvas {
+    width: 100%;
+    border-radius: 6px;
+    cursor: crosshair;
+    display: block;
+  }
+
+  .tac-tools {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .tac-btn {
+    flex: 1;
+    min-width: 60px;
+    background: white;
+    border: 1.5px solid var(--light-gray);
+    border-radius: 8px;
+    padding: 8px 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+
+  .tac-btn.active, .tac-btn:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .tac-btn.danger { border-color: #cc0000; color: #cc0000; }
+  .tac-btn.danger:hover { background: #cc0000; color: white; }
+
+  .formation-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    scrollbar-width: none;
+  }
+
+  .formation-chip {
+    flex-shrink: 0;
+    background: white;
+    border: 1.5px solid var(--light-gray);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+
+  .formation-chip:hover, .formation-chip.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--green-dark);
+  }
+
+  .player-color-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .color-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .color-dot.selected { border-color: var(--dark); transform: scale(1.2); }
+
+  /* ── COMMON ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--mid);
+  }
+
+  .empty-state .emoji { font-size: 2.5rem; margin-bottom: 10px; }
+  .empty-state p { font-size: 0.85rem; }
+
+  .pill-tabs {
+    display: flex;
+    background: var(--light-gray);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+    margin-bottom: 14px;
+  }
+
+  .pill-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 7px;
+    border-radius: 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--mid);
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .pill-tab.active {
+    background: var(--green);
+    color: white;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green-dark);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+    border: 1px solid var(--gold);
+  }
+
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <svg class="crest-svg" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Shield shape -->
+      <path d="M40 2 L75 12 L75 55 Q75 80 40 88 Q5 80 5 55 L5 12 Z" fill="#006400" stroke="#FFB800" stroke-width="3"/>
+      <path d="M40 7 L70 16 L70 54 Q70 76 40 83 Q10 76 10 54 L10 16 Z" fill="#008000" stroke="#FFB800" stroke-width="1.5"/>
+      <!-- Inner gold line -->
+      <line x1="10" y1="52" x2="70" y2="52" stroke="#FFB800" stroke-width="1.5"/>
+      <!-- Crossed hurleys -->
+      <line x1="22" y1="72" x2="42" y2="62" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="42" y1="72" x2="22" y2="62" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <!-- Ball -->
+      <circle cx="56" cy="67" r="8" fill="none" stroke="white" stroke-width="1.5"/>
+      <path d="M48 67 Q52 63 56 67 Q60 71 64 67" stroke="white" stroke-width="1" fill="none"/>
+      <!-- River blue -->
+      <path d="M15 80 Q27 76 40 80 Q53 84 65 80" stroke="#0070C0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Year text -->
+      <text x="26" y="32" font-family="Oswald,sans-serif" font-size="8" fill="#FFB800" font-weight="bold">19  67</text>
+      <!-- WT initials -->
+      <text x="33" y="48" font-family="Oswald,sans-serif" font-size="7" fill="white" text-anchor="middle">WT</text>
+      <!-- Banner top -->
+      <path d="M15 10 Q40 6 65 10" stroke="#FFB800" stroke-width="1" fill="none"/>
+    </svg>
+    <div class="header-text">
+      <h1>WOLFE TONES GAA</h1>
+      <p>Coach Pro · Na Sionna</p>
+    </div>
+    <div class="sport-toggle">
+      <button class="sport-btn active" id="hurlingBtn" onclick="setSport('hurling')">Hurling</button>
+      <button class="sport-btn" id="footballBtn" onclick="setSport('football')">Football</button>
+    </div>
+  </div>
+</header>
+
+<!-- SCREENS -->
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h2>Go ndéana Dia gach rath oraibh!</h2>
+    <p>Wolfe Tones Na Sionna · Est. 1967 · Clare GAA</p>
+  </div>
+
+  <p class="section-title">Quick Access</p>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="showScreen('drills')">
+      <div class="quick-card-icon">🏑</div>
+      <h3>Drill Library</h3>
+      <p>Hurling &amp; football drills for all ages</p>
+    </div>
+    <div class="quick-card gold" onclick="showScreen('tactical')">
+      <div class="quick-card-icon">🎯</div>
+      <h3>Tactical Board</h3>
+      <p>Interactive pitch board</p>
+    </div>
+    <div class="quick-card river" onclick="showScreen('fitness')">
+      <div class="quick-card-icon">💪</div>
+      <h3>Fitness Hub</h3>
+      <p>Age-grouped programmes</p>
+    </div>
+    <div class="quick-card" onclick="showScreen('session')">
+      <div class="quick-card-icon">📋</div>
+      <h3>Session Planner</h3>
+      <p>Build &amp; save sessions</p>
+    </div>
+  </div>
+
+  <p class="section-title">Today's Focus</p>
+  <div style="background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-size:1.4rem;">☀️</span>
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-weight:600;color:var(--green-dark);">Abú Wolfe Tones!</div>
+        <div style="font-size:0.75rem;color:var(--mid);">Select a sport above to begin coaching</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;background:var(--off-white);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;color:var(--green-dark);" id="drillCount">24</div>
+        <div style="font-size:0.68rem;color:var(--mid);">Drills</div>
+      </div>
+      <div style="flex:1;background:var(--off-white);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;color:var(--gold-dark);" id="formCount">8</div>
+        <div style="font-size:0.68rem;color:var(--mid);">Formations</div>
+      </div>
+      <div style="flex:1;background:var(--off-white);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;color:var(--river);" id="progCount">6</div>
+        <div style="font-size:0.68rem;color:var(--mid);">Programmes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DRILL LIBRARY -->
+<div class="screen" id="screen-drills">
+  <p class="section-title">Drill Library</p>
+
+  <div class="pill-tabs">
+    <button class="pill-tab active" onclick="setAgeGroup('all',this)">All Ages</button>
+    <button class="pill-tab" onclick="setAgeGroup('u10',this)">U10</button>
+    <button class="pill-tab" onclick="setAgeGroup('u14',this)">U14</button>
+    <button class="pill-tab" onclick="setAgeGroup('u18',this)">U18</button>
+    <button class="pill-tab" onclick="setAgeGroup('adult',this)">Adult</button>
+  </div>
+
+  <div class="filter-row" id="catFilters">
+    <button class="filter-chip active" onclick="setCat('all',this)">All</button>
+    <button class="filter-chip" onclick="setCat('skill',this)">Skill</button>
+    <button class="filter-chip" onclick="setCat('shooting',this)">Shooting</button>
+    <button class="filter-chip" onclick="setCat('passing',this)">Passing</button>
+    <button class="filter-chip" onclick="setCat('fitness',this)">Fitness</button>
+    <button class="filter-chip" onclick="setCat('tactical',this)">Tactical</button>
+    <button class="filter-chip" onclick="setCat('warmup',this)">Warm-Up</button>
+  </div>
+
+  <div class="drill-grid" id="drillGrid"></div>
+</div>
+
+<!-- TACTICAL BOARD -->
+<div class="screen" id="screen-tactical">
+  <p class="section-title">Tactical Board</p>
+
+  <div class="pill-tabs">
+    <button class="pill-tab active" id="tacHurling" onclick="setTacSport('hurling',this)">Hurling</button>
+    <button class="pill-tab" id="tacFootball" onclick="setTacSport('football',this)">Football</button>
+  </div>
+
+  <p style="font-size:0.75rem;color:var(--mid);margin-bottom:8px;font-weight:500;">Formations</p>
+  <div class="formation-row" id="formationRow"></div>
+
+  <div class="tac-tools">
+    <button class="tac-btn active" id="tool-player" onclick="setTool('player',this)">👤 Player</button>
+    <button class="tac-btn" id="tool-ball" onclick="setTool('ball',this)">🏐 Ball</button>
+    <button class="tac-btn" id="tool-draw" onclick="setTool('draw',this)">✏️ Draw</button>
+    <button class="tac-btn" id="tool-arrow" onclick="setTool('arrow',this)">➡️ Arrow</button>
+    <button class="tac-btn" id="tool-zone" onclick="setTool('zone',this)">⬜ Zone</button>
+    <button class="tac-btn danger" onclick="clearBoard()">🗑️ Clear</button>
+  </div>
+
+  <p style="font-size:0.72rem;color:var(--mid);margin-bottom:6px;">Player colour</p>
+  <div class="player-color-row">
+    <div class="color-dot selected" style="background:#006400;" onclick="setPlayerColor('#006400',this)"></div>
+    <div class="color-dot" style="background:#cc0000;" onclick="setPlayerColor('#cc0000',this)"></div>
+    <div class="color-dot" style="background:#FFB800;" onclick="setPlayerColor('#FFB800',this)"></div>
+    <div class="color-dot" style="background:#0070C0;" onclick="setPlayerColor('#0070C0',this)"></div>
+    <div class="color-dot" style="background:#ffffff;border:1.5px solid #aaa;" onclick="setPlayerColor('#ffffff',this)"></div>
+    <button style="margin-left:auto;background:var(--green);color:white;border:none;border-radius:8px;padding:6px 12px;font-size:0.72rem;font-weight:600;cursor:pointer;" onclick="saveBoard()">💾 Save</button>
+    <button style="background:var(--gold);color:var(--green-dark);border:none;border-radius:8px;padding:6px 12px;font-size:0.72rem;font-weight:600;cursor:pointer;" onclick="loadBoard()">📂 Load</button>
+  </div>
+
+  <div class="pitch-wrapper">
+    <canvas id="tacticalCanvas"></canvas>
+  </div>
+
+  <p style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;margin-top:-8px;background:#1a4a1a;padding:6px;border-radius:0 0 var(--radius) var(--radius);">Tap to place · Drag players to move · Draw mode for arrows</p>
+</div>
+
+<!-- FITNESS HUB -->
+<div class="screen" id="screen-fitness">
+  <p class="section-title">Fitness Hub</p>
+
+  <div class="pill-tabs">
+    <button class="pill-tab active" onclick="setFitAge('u12',this)">U12</button>
+    <button class="pill-tab" onclick="setFitAge('u16',this)">U16</button>
+    <button class="pill-tab" onclick="setFitAge('adult',this)">Adult</button>
+  </div>
+
+  <div id="fitnessContent"></div>
+</div>
+
+<!-- SESSION PLANNER -->
+<div class="screen" id="screen-session">
+  <p class="section-title">Session Planner</p>
+  <div style="background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:14px;">
+    <input id="sessionTitle" type="text" placeholder="Session title e.g. Pre-match warm-up" style="width:100%;border:1.5px solid var(--light-gray);border-radius:8px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:0.85rem;margin-bottom:10px;outline:none;">
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <select id="sessionAge" style="flex:1;border:1.5px solid var(--light-gray);border-radius:8px;padding:8px;font-size:0.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Age Group</option>
+        <option>U10</option><option>U12</option><option>U14</option><option>U16</option><option>U18</option><option>Adult</option>
+      </select>
+      <select id="sessionSport" style="flex:1;border:1.5px solid var(--light-gray);border-radius:8px;padding:8px;font-size:0.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Sport</option>
+        <option>Hurling</option><option>Football</option><option>Both</option>
+      </select>
+      <select id="sessionDur" style="flex:1;border:1.5px solid var(--light-gray);border-radius:8px;padding:8px;font-size:0.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Duration</option>
+        <option>45 min</option><option>60 min</option><option>75 min</option><option>90 min</option>
+      </select>
+    </div>
+    <button onclick="addSessionBlock('Warm-Up')" style="width:100%;background:var(--green);color:white;border:none;border-radius:8px;padding:10px;font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;">+ Add Block</button>
+  </div>
+
+  <div id="sessionBlocks"></div>
+
+  <div style="display:flex;gap:8px;margin-top:14px;">
+    <button onclick="saveSession()" style="flex:1;background:var(--green-dark);color:white;border:none;border-radius:8px;padding:12px;font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;">💾 Save Session</button>
+    <button onclick="showSavedSessions()" style="flex:1;background:var(--gold);color:var(--green-dark);border:none;border-radius:8px;padding:12px;font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;">📂 My Sessions</button>
+  </div>
+
+  <div id="savedSessionsList" style="margin-top:14px;"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="showScreen('home')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    Home
+  </button>
+  <button class="nav-item" onclick="showScreen('drills')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+    Drills
+  </button>
+  <button class="nav-item" onclick="showScreen('tactical')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+    Board
+  </button>
+  <button class="nav-item" onclick="showScreen('fitness')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
+    Fitness
+  </button>
+  <button class="nav-item" onclick="showScreen('session')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8zm0-4h8v2H8z"/></svg>
+    Sessions
+  </button>
+</nav>
+
+<!-- DRILL MODAL -->
+<div class="modal-overlay" id="drillModal" onclick="closeDrillModal(event)">
+  <div class="modal-sheet" id="drillModalContent">
+    <div class="modal-handle"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+let currentSport = 'hurling';
+let currentAge = 'all';
+let currentCat = 'all';
+let currentTool = 'player';
+let playerColor = '#006400';
+let tacSport = 'hurling';
+let tacPlayers = [];
+let tacLines = [];
+let tacBalls = [];
+let tacZones = [];
+let drawing = false;
+let drawPath = [];
+let dragIdx = null;
+let dragType = null;
+let modalAnim = null;
+let sessionBlocks = [];
+let currentFitAge = 'u12';
+
+// ══════════════════════════════════
+// DRILL DATA
+// ══════════════════════════════════
+const drills = [
+  // HURLING
+  { id:1, sport:'hurling', age:['u10','u14','u18','adult'], cat:'skill', title:'Solo & Strike Circuit', desc:'Players solo the ball up the field and strike at a target, developing hand-eye coordination and striking power.', points:['Keep hurl low on solo','Eyes up when striking','Non-dominant hand practice'], prog:['Add defenders','Increase distance','Time pressure'], anim:'solo-circuit' },
+  { id:2, sport:'hurling', age:['u10','u14'], cat:'skill', title:'Catching & Striking Pairs', desc:'Partners face each other, one lobs a high ball for the other to catch and return with a strike.', points:['Watch ball into hand','Full swing on strike','Call your catch'], prog:['Move back 5m each round','Add movement before catch'], anim:'pairs-catch' },
+  { id:3, sport:'hurling', age:['u14','u18','adult'], cat:'shooting', title:'Sideline Cut Practice', desc:'Players practise the sideline cut from various positions, essential for dead-ball accuracy.', points:['Ball slightly forward of feet','Low follow-through','Head still on contact'], prog:['Move to tighter angles','Pressure from chaser'], anim:'sideline-cut' },
+  { id:4, sport:'hurling', age:['u18','adult'], cat:'tactical', title:'Puck-Out Patterns', desc:'Goalkeeper works with midfielders on structured short and long puck-out plays.', points:['Decoy runners essential','Goalkeeper reads press','Midfielders call for ball'], prog:['Add opposition', 'Multiple options'], anim:'puckout' },
+  { id:5, sport:'hurling', age:['u10','u14','u18','adult'], cat:'warmup', title:'Hurling Tag Warm-Up', desc:'Players with hurleys move freely; tagged players must do 3 ground strikes before rejoining.', points:['Keep hurl under control','Move constantly','Ground strike technique'], prog:['Reduce safe zone','Add two taggers'], anim:'tag-warmup' },
+  { id:6, sport:'hurling', age:['u14','u18','adult'], cat:'passing', title:'Hand Pass Triangles', desc:'Three players in a triangle, rapid hand passing with movement. Develops quick release and decision-making.', points:['Short punch pass','Immediate movement after pass','Head up always'], prog:['Add defender in middle','Expand to 4-player diamond'], anim:'triangles' },
+  { id:7, sport:'hurling', age:['u18','adult'], cat:'fitness', title:'Hurling Interval Sprints', desc:'Sprint 20m soloing the ball, jog back, repeat. Combines ball control with GAA-specific conditioning.', points:['Maintain control under fatigue','Alternate hands','Work:rest 1:1'], prog:['Increase reps','Add strike at end of sprint'], anim:'intervals' },
+  { id:8, sport:'hurling', age:['u10'], cat:'skill', title:'Ground Hurling Game', desc:'U10 small-sided game played with ball on ground only — builds fundamental striking and control.', points:['Trap ball before striking','Keep hurl flat','Score through small goals'], prog:['Introduce lifting','Raise one goal height'], anim:'ground-game' },
+  // FOOTBALL
+  { id:9, sport:'football', age:['u10','u14','u18','adult'], cat:'skill', title:'Solo & Kick Pairs', desc:'Players solo toward a partner, deliver a hand or kick pass, then switch. Builds fundamental ball control.', points:['Bounce every 4 solos','Clean hand pass release','Point foot on kick'], prog:['Add movement on receipt','Increase distance'], anim:'solo-kick' },
+  { id:10, sport:'football', age:['u14','u18','adult'], cat:'shooting', title:'Shooting Under Pressure', desc:'Player receives from feeder, turns and shoots inside 8 seconds with a passive defender approaching.', points:['Create space before shot','Low body shot from distance','Fist over bar if rushed'], prog:['Active defender','Reduce time to 5s'], anim:'shooting-pressure' },
+  { id:11, sport:'football', age:['u18','adult'], cat:'tactical', title:'Kick-Out Strategy', desc:'Goalkeeper and midfielders rehearse structured kickout plays — short, medium and long options.', points:['Decoy runs essential','Catcher must call','Midfielder screens blocker'], prog:['Add opposition press','Call plays by signal'], anim:'kickout' },
+  { id:12, sport:'football', age:['u10','u14'], cat:'warmup', title:'Possession Tag', desc:'One team tries to keep possession via hand passes while the other team tries to win it back.', points:['Support the ball carrier','Move to create passing angles','Protect the ball'], prog:['Reduce area','Add 2 more defenders'], anim:'possession-tag' },
+  { id:13, sport:'football', age:['u14','u18','adult'], cat:'passing', title:'Inside Pass & Finish', desc:'Midfielder delivers a kick pass to a forward who takes one touch and scores.', points:['Weight of pass onto preferred foot','Forward leads at right time','First touch sets up shot'], prog:['Vary delivery height','Add keeper'], anim:'inside-pass' },
+  { id:14, sport:'football', age:['u18','adult'], cat:'fitness', title:'Football Shuttle Fitness', desc:'5-10-5 shuttle with ball — solo, bounce, change direction. GAA-specific agility and endurance.', points:['Low centre of gravity on turns','Ball in outside hand','Explode off the line'], prog:['Add markers to beat','Time each rep'], anim:'shuttles' },
+  { id:15, sport:'football', age:['u10','u14'], cat:'skill', title:'Mark Practice', desc:'High fielding practice — feeder kicks a high ball, player calls mark, catches and converts.', points:['Two hands above head','Call "MARK!" clearly','Controlled placement after mark'], prog:['Add chaser','Use different kick types'], anim:'mark' },
+  { id:16, sport:'football', age:['u14','u18','adult'], cat:'tactical', title:'Press & Recovery', desc:'Forwards set up a press on the opposing kickout while the rest practice defensive shape recovery.', points:['Trigger press on signal','Don\'t over-commit','Defensive shape priority'], prog:['Full 15v15 application','Time press duration'], anim:'press' },
+  // BOTH
+  { id:17, sport:'both', age:['u10','u14','u18','adult'], cat:'warmup', title:'Rondo Warm-Up', desc:'Small area keep-ball — 4v1 or 5v2. Adapts to hurling (hand pass only) or football.', points:['One or two touch maximum','Move after every pass','Defender transitions instantly'], prog:['Reduce area','Add second defender'], anim:'rondo' },
+  { id:18, sport:'both', age:['u10','u14'], cat:'skill', title:'Agility Ladder Skills', desc:'Players move through agility ladder patterns, incorporating catches or solos at each end.', points:['Quick light feet','Eyes up through ladder','Explosive exit'], prog:['Add ball skill at end','Speed time each rep'], anim:'ladder' },
+  { id:19, sport:'both', age:['u14','u18','adult'], cat:'fitness', title:'4-Corner Conditioning', desc:'4 cones in a square — sprint, jog, backpedal, shuffle each side. Combine with sport-specific skill.', points:['Maximum effort on sprint side','Maintain form when tired','Call switches clearly'], prog:['Reduce rest','Add skill element'], anim:'corners' },
+  { id:20, sport:'both', age:['u10'], cat:'warmup', title:'Freeze Tag (Ball Version)', desc:'Classic freeze tag — when tagged you\'re frozen until a teammate rolls/passes the ball to you.', points:['Keep moving','Look for frozen teammates','Protect ball carrier'], prog:['Two taggers','Add scoring zone'], anim:'freeze-tag' },
+];
+
+// ══════════════════════════════════
+// ANIMATIONS
+// ══════════════════════════════════
+const animDefs = {
+  'solo-circuit': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const speed = 0.3;
+    const players = [
+      { x: w*0.15 + Math.sin(t*speed)*w*0.05, y: h*0.5, label:'1', color:'#006400' },
+      { x: w*0.45, y: h*0.5, label:'2', color:'#FFB800' },
+      { x: w*0.75, y: h*0.5, label:'3', color:'#006400' },
+    ];
+    const ballX = w*0.15 + Math.sin(t*speed)*w*0.3 + w*0.1*(1-Math.cos(t*speed*0.5));
+    const ballY = h*0.5;
+    drawBall(ctx, ballX, ballY, 5, 'white');
+    players.forEach(p => drawPlayer(ctx, p.x, p.y, p.label, p.color));
+    drawArrow(ctx, w*0.2, h*0.5, w*0.8, h*0.5, 'rgba(255,255,255,0.3)');
+  },
+  'pairs-catch': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const arc = Math.abs(Math.sin(t*0.4));
+    const ballX = w*0.3 + arc*(w*0.4);
+    const ballY = h*0.5 - arc*h*0.3;
+    drawPlayer(ctx, w*0.2, h*0.55, 'A', '#006400');
+    drawPlayer(ctx, w*0.8, h*0.55, 'B', '#FFB800');
+    drawBall(ctx, ballX, ballY, 6, 'white');
+    if(arc > 0.8) {
+      ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.arc(w*0.8,h*0.55,18,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    }
+  },
+  'triangles': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const pts = [[w*0.5,h*0.25],[w*0.25,h*0.72],[w*0.75,h*0.72]];
+    const ballSeg = Math.floor(t*0.5) % 3;
+    const segT = (t*0.5) % 1;
+    const from = pts[ballSeg], to = pts[(ballSeg+1)%3];
+    const bx = from[0]+(to[0]-from[0])*segT, by = from[1]+(to[1]-from[1])*segT;
+    ctx.strokeStyle='rgba(255,184,0,0.4)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+    ctx.beginPath();pts.forEach((p,i)=>{i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});ctx.closePath();ctx.stroke();ctx.setLineDash([]);
+    pts.forEach((p,i)=>drawPlayer(ctx,p[0],p[1],String(i+1),'#006400'));
+    drawBall(ctx,bx,by,5,'white');
+  },
+  'puckout': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    drawPlayer(ctx,w*0.5,h*0.92,'GK','#0070C0');
+    drawPlayer(ctx,w*0.5,h*0.55,'M1','#006400');
+    drawPlayer(ctx,w*0.3,h*0.45,'M2','#FFB800');
+    drawPlayer(ctx,w*0.7,h*0.45,'M3','#FFB800');
+    const arc = Math.abs(Math.sin(t*0.35));
+    const bx = w*0.5, by = h*0.92 - arc*h*0.45;
+    drawBall(ctx,bx,by,5,'white');
+    drawArrow(ctx,w*0.5,h*0.88,w*0.5,h*0.58,'rgba(255,255,255,0.3)');
+  },
+  'kickout': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    drawPlayer(ctx,w*0.5,h*0.9,'GK','#0070C0');
+    drawPlayer(ctx,w*0.5,h*0.55,'M1','#006400');
+    drawPlayer(ctx,w*0.28,h*0.42,'F1','#FFB800');
+    drawPlayer(ctx,w*0.72,h*0.42,'F2','#FFB800');
+    const arc = Math.abs(Math.sin(t*0.35));
+    const goLong = Math.floor(t*0.15) % 2;
+    const tx = goLong ? w*0.72 : w*0.5;
+    const ty = goLong ? h*0.42 : h*0.55;
+    const bx = w*0.5 + (tx-w*0.5)*arc;
+    const by = h*0.88 - arc*(h*0.88-ty) - Math.sin(arc*Math.PI)*h*0.15;
+    drawBall(ctx,bx,by,5,'white');
+  },
+  'sideline-cut': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const cycle = (t*0.25) % 1;
+    const px = w*0.15, py = h*0.5;
+    drawPlayer(ctx,px,py,'P','#006400');
+    drawBall(ctx,px+4,py-4,5,'white');
+    if(cycle > 0.3) {
+      const bEnd = w*0.85, bY = h*0.35;
+      const prog = Math.min(1,(cycle-0.3)/0.6);
+      ctx.strokeStyle='rgba(255,184,0,0.5)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(px+4,py-4);ctx.quadraticCurveTo(w*0.4,h*0.2,bEnd,bY);ctx.stroke();ctx.setLineDash([]);
+      const bezX = (1-prog)*(1-prog)*(px+4)+2*(1-prog)*prog*w*0.4+prog*prog*bEnd;
+      const bezY = (1-prog)*(1-prog)*(py-4)+2*(1-prog)*prog*h*0.2+prog*prog*bY;
+      drawBall(ctx,bezX,bezY,5,'white');
+    }
+    // goal posts
+    ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(w*0.82,h*0.25);ctx.lineTo(w*0.82,h*0.45);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(w*0.92,h*0.25);ctx.lineTo(w*0.92,h*0.45);ctx.stroke();
+  },
+  'shooting-pressure': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const p1 = {x:w*0.35,y:h*0.55};
+    const def = {x:w*0.55 + Math.sin(t*0.4)*w*0.05, y:h*0.5};
+    drawPlayer(ctx,w*0.15,h*0.55,'F','#FFB800');
+    drawPlayer(ctx,p1.x,p1.y,'S','#006400');
+    drawPlayer(ctx,def.x,def.y,'D','#cc0000');
+    drawGoal(ctx,w,h,'top');
+    const cycle = (t*0.3) % 1;
+    if(cycle>0.3){
+      const prog=Math.min(1,(cycle-0.3)/0.5);
+      drawBall(ctx,p1.x+(w*0.5-p1.x)*prog,p1.y+(h*0.1-p1.y)*prog,5,'white');
+    } else {
+      drawBall(ctx,w*0.15+4,h*0.54,5,'white');
+    }
+  },
+  'rondo': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const r=h*0.28;
+    const cx=w*0.5,cy=h*0.5;
+    const n=5;
+    const pts=Array.from({length:n},(_,i)=>{
+      const a=i/n*Math.PI*2-Math.PI/2;
+      return {x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r};
+    });
+    ctx.strokeStyle='rgba(255,184,0,0.25)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+    pts.forEach((p,i)=>drawPlayer(ctx,p.x,p.y,String(i+1),'#006400'));
+    drawPlayer(ctx,cx,cy,'D','#cc0000');
+    const seg=Math.floor(t*0.5)%n;const segT=(t*0.5)%1;
+    const fp=pts[seg],tp=pts[(seg+1)%n];
+    drawBall(ctx,fp.x+(tp.x-fp.x)*segT,fp.y+(tp.y-fp.y)*segT,5,'white');
+  },
+  'shuttles': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const cycle=(t*0.4)%4;
+    const px = cycle<1 ? w*0.1+w*0.3*cycle :
+                cycle<2 ? w*0.4+w*0.4*(cycle-1) :
+                cycle<3 ? w*0.8-w*0.4*(cycle-2) : w*0.4-w*0.3*(cycle-3);
+    drawPlayer(ctx,px,h*0.5,'P','#006400');
+    drawBall(ctx,px+8,h*0.48,5,'white');
+    [w*0.1,w*0.4,w*0.8].forEach(cx=>{
+      ctx.strokeStyle=cycle>0.05?'rgba(255,184,0,0.6)':'rgba(255,255,255,0.3)';
+      ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(cx,h*0.35);ctx.lineTo(cx,h*0.65);ctx.stroke();
+    });
+  },
+  'intervals': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const cycle=(t*0.35)%2;
+    const px=cycle<1?w*0.1+w*0.8*cycle:w*0.9-w*0.8*(cycle-1);
+    const running=cycle<1;
+    drawPlayer(ctx,px,h*0.5,'P','#006400');
+    if(running) drawBall(ctx,px+10,h*0.48,5,'white');
+    ctx.fillStyle=running?'rgba(0,255,0,0.15)':'rgba(255,165,0,0.15)';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=running?'rgba(0,255,0,0.8)':'rgba(255,165,0,0.8)';
+    ctx.font='bold 10px Inter';ctx.textAlign='right';
+    ctx.fillText(running?'SPRINT':'JOG BACK',w-6,14);ctx.textAlign='start';
+  },
+  'corners': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const corners=[[w*0.2,h*0.25],[w*0.8,h*0.25],[w*0.8,h*0.75],[w*0.2,h*0.75]];
+    const seg=Math.floor(t*0.4)%4;const segT=(t*0.4)%1;
+    const fc=corners[seg],tc=corners[(seg+1)%4];
+    corners.forEach(c=>{ctx.fillStyle='rgba(255,184,0,0.5)';ctx.beginPath();ctx.arc(c[0],c[1],6,0,Math.PI*2);ctx.fill();});
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();corners.forEach((c,i)=>i===0?ctx.moveTo(c[0],c[1]):ctx.lineTo(c[0],c[1]));ctx.closePath();ctx.stroke();ctx.setLineDash([]);
+    drawPlayer(ctx,fc[0]+(tc[0]-fc[0])*segT,fc[1]+(tc[1]-fc[1])*segT,'P','#006400');
+  },
+  'tag-warmup': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const seed=t*0.5;
+    const players=[
+      {x:w*0.3+Math.sin(seed*1.1)*w*0.15,y:h*0.4+Math.cos(seed*0.9)*h*0.15,l:'1',c:'#006400'},
+      {x:w*0.6+Math.sin(seed*0.8)*w*0.15,y:h*0.6+Math.cos(seed*1.2)*h*0.15,l:'2',c:'#006400'},
+      {x:w*0.5+Math.sin(seed*1.3)*w*0.2,y:h*0.5+Math.cos(seed*0.7)*h*0.2,l:'T',c:'#cc0000'},
+      {x:w*0.25+Math.sin(seed*0.6)*w*0.1,y:h*0.7+Math.cos(seed*1.4)*h*0.1,l:'3',c:'#FFB800'},
+    ];
+    players.forEach(p=>drawPlayer(ctx,p.x,p.y,p.l,p.c));
+  },
+  'possession-tag': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const seed=t*0.5;
+    const team=[
+      {x:w*0.2+Math.sin(seed*0.9)*w*0.1,y:h*0.35+Math.cos(seed*1.1)*h*0.1,l:'A',c:'#006400'},
+      {x:w*0.5+Math.sin(seed*1.2)*w*0.15,y:h*0.5+Math.cos(seed*0.8)*h*0.12,l:'B',c:'#006400'},
+      {x:w*0.75+Math.sin(seed*0.7)*w*0.08,y:h*0.65+Math.cos(seed*1.3)*h*0.1,l:'C',c:'#006400'},
+    ];
+    const def=[
+      {x:w*0.4+Math.sin(seed*1.4)*w*0.12,y:h*0.45+Math.cos(seed*0.6)*h*0.12,l:'D','c':'#cc0000'},
+    ];
+    const ballHolder=Math.floor(t*0.3)%3;
+    team.forEach((p,i)=>drawPlayer(ctx,p.x,p.y,p.l,p.c));
+    def.forEach(p=>drawPlayer(ctx,p.x,p.y,p.l,p.c));
+    drawBall(ctx,team[ballHolder].x+8,team[ballHolder].y-8,5,'white');
+  },
+  'mark': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const arc=Math.abs(Math.sin(t*0.4));
+    const bx=w*0.3+(w*0.2)*arc;
+    const by=h*0.8-arc*h*0.55;
+    drawPlayer(ctx,w*0.3,h*0.85,'K','#FFB800');
+    drawPlayer(ctx,w*0.5,h*0.45,'C','#006400');
+    drawBall(ctx,bx,by,6,'white');
+    if(arc>0.85){
+      ctx.strokeStyle='rgba(0,200,255,0.5)';ctx.lineWidth=2;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.arc(w*0.5,h*0.45,20,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(0,200,255,0.8)';ctx.font='bold 9px Inter';
+      ctx.textAlign='center';ctx.fillText('MARK!',w*0.5,h*0.35);ctx.textAlign='start';
+    }
+  },
+  'inside-pass': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    drawPlayer(ctx,w*0.2,h*0.55,'M','#FFB800');
+    drawPlayer(ctx,w*0.65,h*0.45,'F','#006400');
+    drawGoal(ctx,w,h,'top');
+    const cycle=(t*0.35)%1;
+    if(cycle<0.5){
+      const prog=cycle/0.5;
+      drawBall(ctx,w*0.2+(w*0.45)*prog,h*0.55-(h*0.1)*prog,5,'white');
+    } else {
+      const prog=(cycle-0.5)/0.5;
+      drawBall(ctx,w*0.65+(w*0.15)*prog,h*0.45-(h*0.35)*prog,5,'white');
+    }
+  },
+  'press': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const pressOn=Math.floor(t*0.2)%2===0;
+    ['F1','F2','F3'].forEach((l,i)=>{
+      const bx=pressOn?w*(0.25+i*0.25):w*(0.2+i*0.3);
+      const by=pressOn?h*0.25:h*0.35;
+      drawPlayer(ctx,bx+Math.sin(t*0.6+i)*8,by,l,'#006400');
+    });
+    drawPlayer(ctx,w*0.5,h*0.8,'GK','#0070C0');
+    drawBall(ctx,w*0.5+Math.sin(t*0.3)*10,h*0.75,5,'white');
+    if(pressOn){
+      ctx.fillStyle='rgba(255,50,50,0.15)';
+      ctx.beginPath();ctx.arc(w*0.5,h*0.75,50,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(255,50,50,0.7)';ctx.font='bold 9px Inter';ctx.textAlign='center';
+      ctx.fillText('PRESS!',w*0.5,h*0.6);ctx.textAlign='start';
+    }
+  },
+  'ground-game': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const seed=t*0.4;
+    const players=[
+      {x:w*0.25+Math.sin(seed)*w*0.1,y:h*0.45+Math.cos(seed*1.1)*h*0.1,l:'1',c:'#006400'},
+      {x:w*0.55+Math.sin(seed*0.8)*w*0.1,y:h*0.55+Math.cos(seed*1.3)*h*0.1,l:'2',c:'#cc0000'},
+    ];
+    players.forEach(p=>drawPlayer(ctx,p.x,p.y,p.l,p.c));
+    drawBall(ctx,w*0.4+Math.sin(seed*1.2)*w*0.05,h*0.5+Math.cos(seed*0.9)*h*0.05,5,'white');
+    [[w*0.1,h*0.5],[w*0.9,h*0.5]].forEach(g=>{
+      ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(g[0],h*0.4);ctx.lineTo(g[0],h*0.6);ctx.stroke();
+    });
+  },
+  'solo-kick': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const cycle=(t*0.3)%2;
+    const px=cycle<1?w*0.1+w*0.4*cycle:w*0.5+w*0.4*(cycle-1);
+    drawPlayer(ctx,px,h*0.5,'P','#006400');
+    drawBall(ctx,px+Math.sin(t*2)*8,h*0.48+Math.abs(Math.sin(t*2))*8,5,'white');
+    if(cycle>0.9&&cycle<1.1){
+      drawArrow(ctx,px,h*0.5,px+60,h*0.35,'rgba(255,184,0,0.5)');
+    }
+  },
+  'freeze-tag': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const seed=t*0.45;
+    const frozen={x:w*0.65,y:h*0.35};
+    drawPlayer(ctx,w*0.25+Math.sin(seed)*w*0.12,h*0.6+Math.cos(seed*1.1)*h*0.1,'T','#cc0000');
+    drawPlayer(ctx,w*0.5+Math.sin(seed*0.8)*w*0.1,h*0.5+Math.cos(seed*0.9)*h*0.1,'A','#006400');
+    ctx.strokeStyle='rgba(0,150,255,0.5)';ctx.lineWidth=2;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.arc(frozen.x,frozen.y,18,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    drawPlayer(ctx,frozen.x,frozen.y,'F','#888');
+    const passArc=Math.abs(Math.sin(seed*0.7));
+    drawBall(ctx,w*0.5+(frozen.x-w*0.5)*passArc,h*0.5+(frozen.y-h*0.5)*passArc-passArc*20,5,'white');
+  },
+  'ladder': (ctx,w,h,t) => {
+    drawPitchMini(ctx,w,h);
+    const rungs=8;
+    const lx=w*0.2,rx=w*0.8,ty=h*0.15,by=h*0.75;
+    ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(lx,ty);ctx.lineTo(lx,by);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(rx,ty);ctx.lineTo(rx,by);ctx.stroke();
+    for(let i=0;i<=rungs;i++){const y=ty+i*(by-ty)/rungs;ctx.beginPath();ctx.moveTo(lx,y);ctx.lineTo(rx,y);ctx.stroke();}
+    const cycle=(t*0.35)%1;
+    const py=ty+(by-ty)*cycle;
+    const oscX=w*0.5+Math.sin(t*6)*w*0.1;
+    drawPlayer(ctx,oscX,py,'P','#006400');
+  },
+};
+
+// ══════════════════════════════════
+// DRAW HELPERS
+// ══════════════════════════════════
+function drawPitchMini(ctx,w,h) {
+  ctx.fillStyle='#1a5c1a';ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+  ctx.strokeRect(w*0.05,h*0.05,w*0.9,h*0.9);
+  ctx.beginPath();ctx.moveTo(w*0.05,h*0.5);ctx.lineTo(w*0.95,h*0.5);ctx.stroke();
+  ctx.beginPath();ctx.arc(w*0.5,h*0.5,h*0.12,0,Math.PI*2);ctx.stroke();
+}
+
+function drawPlayer(ctx,x,y,label,color) {
+  ctx.fillStyle=color;
+  ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='white';ctx.font='bold 8px Oswald,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(label,x,y+0.5);ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+
+function drawBall(ctx,x,y,r,color) {
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,0.3)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();
+}
+
+function drawArrow(ctx,x1,y1,x2,y2,color) {
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.setLineDash([]);
+  const a=Math.atan2(y2-y1,x2-x1);
+  ctx.fillStyle=color;ctx.beginPath();
+  ctx.moveTo(x2,y2);ctx.lineTo(x2-8*Math.cos(a-0.4),y2-8*Math.sin(a-0.4));ctx.lineTo(x2-8*Math.cos(a+0.4),y2-8*Math.sin(a+0.4));
+  ctx.closePath();ctx.fill();
+}
+
+function drawGoal(ctx,w,h,side) {
+  ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=2;
+  const gw=w*0.12,gd=h*0.05,y=side==='top'?h*0.08:h*0.92;
+  const x1=w*0.5-gw/2,x2=w*0.5+gw/2;
+  ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x1,y+(side==='top'?gd:-gd));ctx.lineTo(x2,y+(side==='top'?gd:-gd));ctx.lineTo(x2,y);ctx.stroke();
+}
+
+// ══════════════════════════════════
+// SCREEN NAV
+// ══════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const navMap = {home:0,drills:1,tactical:2,fitness:3,session:4};
+  if(navMap[name]!==undefined) document.querySelectorAll('.nav-item')[navMap[name]].classList.add('active');
+  if(name==='drills') renderDrills();
+  if(name==='tactical') initTactical();
+  if(name==='fitness') renderFitness();
+}
+
+function setSport(s) {
+  currentSport = s;
+  document.getElementById('hurlingBtn').classList.toggle('active', s==='hurling');
+  document.getElementById('footballBtn').classList.toggle('active', s==='football');
+  if(document.getElementById('screen-drills').classList.contains('active')) renderDrills();
+}
+
+// ══════════════════════════════════
+// DRILL LIBRARY
+// ══════════════════════════════════
+function setAgeGroup(age, el) {
+  currentAge = age;
+  document.querySelectorAll('.pill-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderDrills();
+}
+
+function setCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderDrills();
+}
+
+function getFilteredDrills() {
+  return drills.filter(d => {
+    const sportMatch = d.sport === currentSport || d.sport === 'both';
+    const ageMatch = currentAge === 'all' || d.age.includes(currentAge);
+    const catMatch = currentCat === 'all' || d.cat === currentCat;
+    return sportMatch && ageMatch && catMatch;
+  });
+}
+
+function renderDrills() {
+  const grid = document.getElementById('drillGrid');
+  const filtered = getFilteredDrills();
+  if(!filtered.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>No drills match this filter.<br>Try a different age group or category.</p></div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(d => `
+    <div class="drill-card" onclick="openDrillModal(${d.id})">
+      <div class="drill-canvas-wrap">
+        <canvas id="canvas-${d.id}" width="300" height="140"></canvas>
+      </div>
+      <div class="drill-info">
+        <div class="drill-badges">
+          <span class="badge badge-green">${d.sport==='both'?'Both':d.sport.charAt(0).toUpperCase()+d.sport.slice(1)}</span>
+          <span class="badge badge-gold">${d.cat.charAt(0).toUpperCase()+d.cat.slice(1)}</span>
+          <span class="badge badge-blue">${d.age[0].toUpperCase()}+</span>
+        </div>
+        <div class="drill-title">${d.title}</div>
+        <div class="drill-desc">${d.desc.substring(0,80)}...</div>
+      </div>
+    </div>
+  `).join('');
+
+  // animate canvases
+  filtered.forEach(d => {
+    const canvas = document.getElementById('canvas-'+d.id);
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let frame = 0;
+    let animId;
+    const fn = animDefs[d.anim] || animDefs['rondo'];
+    const animate = () => {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      fn(ctx, canvas.width, canvas.height, frame/30);
+      frame++;
+      animId = requestAnimationFrame(animate);
+    };
+    animate();
+    canvas._animId = animId;
+  });
+}
+
+let modalAnimFrame = null;
+
+function openDrillModal(id) {
+  const d = drills.find(x => x.id === id);
+  if(!d) return;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-title">${d.title}</div>
+    <div class="drill-badges" style="margin-bottom:8px;">
+      <span class="badge badge-green">${d.sport==='both'?'Both':d.sport.charAt(0).toUpperCase()+d.sport.slice(1)}</span>
+      <span class="badge badge-gold">${d.cat.charAt(0).toUpperCase()+d.cat.slice(1)}</span>
+      <span class="badge badge-blue">${d.age.join(', ').toUpperCase()}</span>
+    </div>
+    <p style="font-size:0.8rem;color:var(--mid);margin-bottom:10px;line-height:1.5;">${d.desc}</p>
+    <div class="modal-canvas-wrap">
+      <canvas id="modalCanvas" width="400" height="200"></canvas>
+    </div>
+    <div class="anim-controls">
+      <button class="anim-btn" onclick="toggleModalAnim()">⏸ Pause</button>
+      <button class="anim-btn secondary" onclick="resetModalAnim()">↺ Reset</button>
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Coaching Points</div>
+      <ul class="detail-list">${d.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Progressions</div>
+      <ul class="detail-list">${d.prog.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+    <button class="close-modal" onclick="closeDrillModal()">✓ Close</button>
+  `;
+  document.getElementById('drillModal').classList.add('open');
+
+  const canvas = document.getElementById('modalCanvas');
+  const ctx = canvas.getContext('2d');
+  const fn = animDefs[d.anim] || animDefs['rondo'];
+  let frame = 0;
+  let paused = false;
+  let animId;
+  const animate = () => {
+    if(!paused){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      fn(ctx,canvas.width,canvas.height,frame/30);
+      frame++;
+    }
+    animId = requestAnimationFrame(animate);
+  };
+  if(modalAnimFrame) cancelAnimationFrame(modalAnimFrame);
+  animate();
+  modalAnimFrame = animId;
+  window._modalPaused = false;
+  window._modalFrame = () => frame;
+}
+
+function toggleModalAnim() {
+  window._modalPaused = !window._modalPaused;
+  const btn = document.querySelector('.anim-btn');
+  if(btn) btn.textContent = window._modalPaused ? '▶ Play' : '⏸ Pause';
+}
+
+function resetModalAnim() {
+  const canvas = document.getElementById('modalCanvas');
+  if(canvas){const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
+}
+
+function closeDrillModal(e) {
+  if(e && e.target !== document.getElementById('drillModal')) return;
+  document.getElementById('drillModal').classList.remove('open');
+  if(modalAnimFrame) cancelAnimationFrame(modalAnimFrame);
+}
+
+// ══════════════════════════════════
+// TACTICAL BOARD
+// ══════════════════════════════════
+const formations = {
+  hurling: [
+    {name:'3-3-2-1-1-1',positions:[[0.5,0.92],[0.25,0.78],[0.5,0.78],[0.75,0.78],[0.2,0.62],[0.5,0.62],[0.8,0.62],[0.35,0.48],[0.65,0.48],[0.25,0.34],[0.5,0.34],[0.75,0.34],[0.3,0.2],[0.5,0.2],[0.7,0.2]]},
+    {name:'2-3-2-3',positions:[[0.5,0.92],[0.3,0.78],[0.7,0.78],[0.2,0.64],[0.5,0.64],[0.8,0.64],[0.35,0.5],[0.65,0.5],[0.2,0.35],[0.5,0.35],[0.8,0.35],[0.3,0.2],[0.5,0.2],[0.7,0.2],[0.5,0.08]]},
+    {name:'4-4-2',positions:[[0.5,0.92],[0.2,0.75],[0.4,0.75],[0.6,0.75],[0.8,0.75],[0.2,0.55],[0.4,0.55],[0.6,0.55],[0.8,0.55],[0.35,0.35],[0.65,0.35],[0.2,0.18],[0.5,0.18],[0.8,0.18],[0.5,0.08]]},
+  ],
+  football: [
+    {name:'2-3-1-3',positions:[[0.5,0.92],[0.3,0.78],[0.7,0.78],[0.2,0.62],[0.5,0.62],[0.8,0.62],[0.5,0.48],[0.2,0.33],[0.5,0.33],[0.8,0.33],[0.3,0.18],[0.5,0.12],[0.7,0.18],[0.25,0.75],[0.75,0.75]]},
+    {name:'2-3-2-1-2',positions:[[0.5,0.92],[0.3,0.78],[0.7,0.78],[0.2,0.64],[0.5,0.64],[0.8,0.64],[0.35,0.5],[0.65,0.5],[0.5,0.38],[0.3,0.23],[0.7,0.23],[0.25,0.75],[0.75,0.75],[0.5,0.12],[0.5,0.2]]},
+    {name:'1-4-2-2-1',positions:[[0.5,0.92],[0.2,0.75],[0.4,0.75],[0.6,0.75],[0.8,0.75],[0.35,0.58],[0.65,0.58],[0.3,0.42],[0.7,0.42],[0.2,0.25],[0.5,0.25],[0.8,0.25],[0.5,0.12],[0.3,0.15],[0.7,0.15]]},
+  ],
+};
+
+const posLabels = ['GK','FB','CB','HB','HB','MF','MF','HF','HF','FF','FF','FF','FF','FF','FF'];
+
+let tacCanvas, tacCtx, tacW, tacH;
+let tacPaused = false;
+
+function initTactical() {
+  tacCanvas = document.getElementById('tacticalCanvas');
+  tacW = tacCanvas.parentElement.clientWidth - 20;
+  tacH = tacW * 1.6;
+  tacCanvas.width = tacW;
+  tacCanvas.height = tacH;
+  renderFormations();
+  drawTactical();
+  tacCanvas.addEventListener('pointerdown', tacPointerDown);
+  tacCanvas.addEventListener('pointermove', tacPointerMove);
+  tacCanvas.addEventListener('pointerup', tacPointerUp);
+}
+
+function renderFormations() {
+  const row = document.getElementById('formationRow');
+  const fms = formations[tacSport];
+  row.innerHTML = fms.map((f,i) => `<div class="formation-chip" onclick="applyFormation(${i},this)">${f.name}</div>`).join('');
+}
+
+function applyFormation(idx, el) {
+  document.querySelectorAll('.formation-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const fms = formations[tacSport];
+  const f = fms[idx];
+  tacPlayers = f.positions.map((pos,i) => ({
+    x: pos[0]*tacW, y: pos[1]*tacH, label: posLabels[i], color: playerColor
+  }));
+  tacBalls = [{x: tacW*0.5, y: tacH*0.5}];
+  tacLines = [];
+  tacZones = [];
+  drawTactical();
+}
+
+function setTacSport(s, el) {
+  tacSport = s;
+  document.querySelectorAll('#screen-tactical .pill-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  tacPlayers=[];tacLines=[];tacBalls=[];tacZones=[];
+  renderFormations();
+  drawTactical();
+}
+
+function setTool(tool, el) {
+  currentTool = tool;
+  document.querySelectorAll('.tac-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setPlayerColor(c, el) {
+  playerColor = c;
+  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function tacPointerDown(e) {
+  e.preventDefault();
+  const rect = tacCanvas.getBoundingClientRect();
+  const scaleX = tacW / rect.width;
+  const scaleY = tacH / rect.height;
+  const x = (e.clientX - rect.left) * scaleX;
+  const y = (e.clientY - rect.top) * scaleY;
+
+  if(currentTool === 'player') {
+    const hit = tacPlayers.findIndex(p => Math.hypot(p.x-x, p.y-y) < 18);
+    if(hit >= 0) { dragIdx = hit; dragType = 'player'; }
+    else { tacPlayers.push({x,y,label:String(tacPlayers.length+1),color:playerColor}); drawTactical(); }
+  } else if(currentTool === 'ball') {
+    const hit = tacBalls.findIndex(b => Math.hypot(b.x-x, b.y-y) < 14);
+    if(hit >= 0) { dragIdx = hit; dragType = 'ball'; }
+    else { tacBalls.push({x,y}); drawTactical(); }
+  } else if(currentTool === 'draw' || currentTool === 'arrow') {
+    drawing = true; drawPath = [{x,y}];
+  } else if(currentTool === 'zone') {
+    tacZones.push({x:x-40,y:y-30,w:80,h:60});
+    drawTactical();
+  }
+}
+
+function tacPointerMove(e) {
+  e.preventDefault();
+  if(!drawing && dragIdx === null) return;
+  const rect = tacCanvas.getBoundingClientRect();
+  const scaleX = tacW / rect.width;
+  const scaleY = tacH / rect.height;
+  const x = (e.clientX - rect.left) * scaleX;
+  const y = (e.clientY - rect.top) * scaleY;
+  if(dragType === 'player' && dragIdx !== null) {
+    tacPlayers[dragIdx].x = x; tacPlayers[dragIdx].y = y; drawTactical();
+  } else if(dragType === 'ball' && dragIdx !== null) {
+    tacBalls[dragIdx].x = x; tacBalls[dragIdx].y = y; drawTactical();
+  } else if(drawing) {
+    drawPath.push({x,y}); drawTactical();
+    tacCtx.strokeStyle='rgba(255,255,100,0.8)';tacCtx.lineWidth=2;tacCtx.setLineDash([]);
+    tacCtx.beginPath();tacCtx.moveTo(drawPath[drawPath.length-2].x,drawPath[drawPath.length-2].y);
+    tacCtx.lineTo(x,y);tacCtx.stroke();
+  }
+}
+
+function tacPointerUp(e) {
+  e.preventDefault();
+  if(drawing && drawPath.length > 1) {
+    tacLines.push({path:[...drawPath],type:currentTool});
+    drawing = false; drawPath = [];
+    drawTactical();
+  }
+  dragIdx = null; dragType = null;
+}
+
+function drawTactical() {
+  tacCtx = tacCanvas.getContext('2d');
+  tacCtx.clearRect(0,0,tacW,tacH);
+  drawGAAPitch(tacCtx,tacW,tacH,tacSport);
+  // zones
+  tacZones.forEach(z=>{
+    tacCtx.fillStyle='rgba(255,184,0,0.15)';tacCtx.strokeStyle='rgba(255,184,0,0.5)';
+    tacCtx.lineWidth=1.5;tacCtx.setLineDash([4,3]);
+    tacCtx.fillRect(z.x,z.y,z.w,z.h);tacCtx.strokeRect(z.x,z.y,z.w,z.h);
+    tacCtx.setLineDash([]);
+  });
+  // lines
+  tacLines.forEach(l=>{
+    if(l.path.length<2)return;
+    tacCtx.strokeStyle='rgba(255,255,100,0.8)';tacCtx.lineWidth=2;tacCtx.setLineDash([]);
+    tacCtx.beginPath();l.path.forEach((pt,i)=>i===0?tacCtx.moveTo(pt.x,pt.y):tacCtx.lineTo(pt.x,pt.y));tacCtx.stroke();
+    if(l.type==='arrow'){
+      const last=l.path[l.path.length-1],prev=l.path[l.path.length-2];
+      const a=Math.atan2(last.y-prev.y,last.x-prev.x);
+      tacCtx.fillStyle='rgba(255,255,100,0.8)';
+      tacCtx.beginPath();tacCtx.moveTo(last.x,last.y);
+      tacCtx.lineTo(last.x-10*Math.cos(a-0.4),last.y-10*Math.sin(a-0.4));
+      tacCtx.lineTo(last.x-10*Math.cos(a+0.4),last.y-10*Math.sin(a+0.4));
+      tacCtx.closePath();tacCtx.fill();
+    }
+  });
+  // balls
+  tacBalls.forEach(b=>{
+    tacCtx.fillStyle='white';tacCtx.beginPath();tacCtx.arc(b.x,b.y,9,0,Math.PI*2);tacCtx.fill();
+    tacCtx.strokeStyle='rgba(0,0,0,0.3)';tacCtx.lineWidth=1;tacCtx.beginPath();tacCtx.arc(b.x,b.y,9,0,Math.PI*2);tacCtx.stroke();
+    tacCtx.strokeStyle='rgba(0,0,0,0.2)';tacCtx.lineWidth=1;
+    tacCtx.beginPath();tacCtx.arc(b.x,b.y,5,0,Math.PI*2);tacCtx.stroke();
+  });
+  // players
+  tacPlayers.forEach((p,i)=>{
+    tacCtx.fillStyle=p.color;tacCtx.beginPath();tacCtx.arc(p.x,p.y,14,0,Math.PI*2);tacCtx.fill();
+    tacCtx.strokeStyle='white';tacCtx.lineWidth=2;tacCtx.beginPath();tacCtx.arc(p.x,p.y,14,0,Math.PI*2);tacCtx.stroke();
+    tacCtx.fillStyle='white';tacCtx.font='bold 9px Oswald,sans-serif';
+    tacCtx.textAlign='center';tacCtx.textBaseline='middle';tacCtx.fillText(p.label,p.x,p.y+0.5);
+    tacCtx.textAlign='start';tacCtx.textBaseline='alphabetic';
+  });
+}
+
+function drawGAAPitch(ctx,w,h,sport) {
+  // field
+  ctx.fillStyle='#2a7a2a';ctx.fillRect(0,0,w,h);
+  // stripes
+  for(let i=0;i<8;i++){
+    ctx.fillStyle=i%2===0?'rgba(0,0,0,0.05)':'transparent';
+    ctx.fillRect(0,i*h/8,w,h/8);
+  }
+  ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=2;
+  // boundary
+  ctx.strokeRect(w*0.04,h*0.03,w*0.92,h*0.94);
+  // halfway
+  ctx.beginPath();ctx.moveTo(w*0.04,h*0.5);ctx.lineTo(w*0.96,h*0.5);ctx.stroke();
+  // centre circle
+  ctx.beginPath();ctx.arc(w*0.5,h*0.5,w*0.08,0,Math.PI*2);ctx.stroke();
+  // 45m / 65m lines
+  [0.22,0.78].forEach(y=>{
+    ctx.beginPath();ctx.moveTo(w*0.04,h*y);ctx.lineTo(w*0.96,h*y);
+    ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.7)';
+  });
+  // goals
+  const gw=w*0.15, gx=(w-gw)/2;
+  [h*0.03, h*0.97-h*0.06].forEach(gy=>{
+    ctx.strokeRect(gx,gy,gw,h*0.06);
+    // posts
+    ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx,-h*0.02);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(gx+gw,gy);ctx.lineTo(gx+gw,-h*0.02);ctx.stroke();
+    // small square
+    const sw=gw*0.5,sx=(w-sw)/2;
+    ctx.strokeStyle='rgba(255,255,255,0.4)';
+    ctx.strokeRect(sx,gy,sw,h*0.035);
+    ctx.strokeStyle='rgba(255,255,255,0.7)';
+  });
+  // penalty spots
+  ctx.fillStyle='rgba(255,255,255,0.7)';
+  [h*0.14,h*0.86].forEach(y=>{
+    ctx.beginPath();ctx.arc(w*0.5,y,3,0,Math.PI*2);ctx.fill();
+  });
+}
+
+function clearBoard() {
+  tacPlayers=[];tacLines=[];tacBalls=[];tacZones=[];
+  drawTactical();
+  showToast('Board cleared');
+}
+
+function saveBoard() {
+  const data = {players:tacPlayers,lines:tacLines.map(l=>({...l})),balls:tacBalls,zones:tacZones,sport:tacSport};
+  localStorage.setItem('wt_tactical_board', JSON.stringify(data));
+  showToast('Board saved ✓');
+}
+
+function loadBoard() {
+  const data = localStorage.getItem('wt_tactical_board');
+  if(!data) { showToast('No saved board found'); return; }
+  const d = JSON.parse(data);
+  tacPlayers=d.players||[];tacLines=d.lines||[];tacBalls=d.balls||[];tacZones=d.zones||[];
+  if(d.sport) tacSport=d.sport;
+  drawTactical();
+  showToast('Board loaded ✓');
+}
+
+// ══════════════════════════════════
+// FITNESS HUB
+// ══════════════════════════════════
+const fitnessPrograms = {
+  u12: {
+    title:'U12 Foundation Fitness',
+    weeks: [
+      {week:1,focus:'Movement Foundations',sessions:[
+        {name:'Agility & Fun Games',dur:'30 min',drills:['4-Corner Tag','Animal Movement Runs','Beanbag Balance Relay']},
+        {name:'Speed Basics',dur:'25 min',drills:['10m Acceleration Sprints','Skipping Variations','Side Shuffle Race']},
+      ]},
+      {week:2,focus:'Coordination & Balance',sessions:[
+        {name:'Ladder & Balance',dur:'30 min',drills:['Agility Ladder Patterns','Single-Leg Balances','Hurdle Hops']},
+        {name:'Ball & Movement',dur:'30 min',drills:['Solo/Bounce & Sprint','Catch & Turn','Partner Mirror Drill']},
+      ]},
+      {week:3,focus:'Endurance Foundations',sessions:[
+        {name:'Continuous Play',dur:'35 min',drills:['Endurance Rondo','3v3 Keep Ball','Small-Sided Game']},
+      ]},
+    ],
+    tips:['Keep sessions fun and game-based','Rest:work ratio 1:2 minimum','No heavy lifting at U12','Focus on ABCs — Agility, Balance, Coordination'],
+  },
+  u16: {
+    title:'U16 Athletic Development',
+    weeks: [
+      {week:1,focus:'Speed & Power Introduction',sessions:[
+        {name:'Sprint Mechanics',dur:'40 min',drills:['A-Skip & B-Skip','40m Acceleration','Resisted Band Sprints','Flying 20s']},
+        {name:'Lower Body Power',dur:'35 min',drills:['Broad Jumps','Box Jumps','Single-Leg Squat Hold','Glute Bridges']},
+      ]},
+      {week:2,focus:'Repeated Sprint Ability',sessions:[
+        {name:'Interval Training',dur:'40 min',drills:['5x 100m @ 85%','1 min rest between','Active recovery jog','Finish with 200m time trial']},
+        {name:'GAA Shuttles',dur:'35 min',drills:['5-10-5 Shuttle x8','Sprint-Backpedal-Sprint x6','Illinois Agility Test']},
+      ]},
+      {week:3,focus:'Strength Endurance',sessions:[
+        {name:'Circuit Training',dur:'45 min',drills:['Press-ups x15','Squat Jumps x10','Plank 45s','Lunge Walk 20m','Repeat x4']},
+      ]},
+    ],
+    tips:['Introduce strength work progressively','Prioritise technical form over load','Hydrate well — 500ml before session','Recovery day after high-intensity'],
+  },
+  adult: {
+    title:'Senior Player Conditioning',
+    weeks: [
+      {week:1,focus:'Pre-Season Power',sessions:[
+        {name:'Max Sprint Work',dur:'50 min',drills:['Warm-up 10 min','6x 60m @ 95%','2 min full rest','Depth Jumps x4 sets','Core Finisher 10 min']},
+        {name:'Strength & Power',dur:'50 min',drills:['Barbell Squat 4x6','Romanian Deadlift 3x8','Plyometric Push-Ups 3x8','Farmers Walk 4x20m']},
+      ]},
+      {week:2,focus:'Match-Specific Conditioning',sessions:[
+        {name:'Repeated Sprint Training',dur:'45 min',drills:['8x 30m with 25s rest','4x 150m at 90% with 90s rest','Bleep Test Protocol — level 10 target']},
+        {name:'Technical Conditioning',dur:'50 min',drills:['Solo 40m + shoot circuit x10','7v7 High-Press Game 3x8min','End on 11v11 phase play']},
+      ]},
+      {week:3,focus:'Maintenance & Recovery',sessions:[
+        {name:'Active Recovery',dur:'35 min',drills:['Light jog 15 min','Foam Rolling','Yoga-style stretches','Ice bath or contrast shower']},
+      ]},
+    ],
+    tips:['GPS load monitoring recommended','Hard:easy day principle','Sleep 8hrs for peak recovery','Pre-match meal 3hrs before — complex carbs'],
+  },
+};
+
+function setFitAge(age, el) {
+  currentFitAge = age;
+  document.querySelectorAll('#screen-fitness .pill-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderFitness();
+}
+
+function renderFitness() {
+  const p = fitnessPrograms[currentFitAge];
+  if(!p) return;
+  const content = document.getElementById('fitnessContent');
+  content.innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:var(--radius);padding:14px;margin-bottom:14px;color:white;">
+      <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;">${p.title}</div>
+      <div style="font-size:0.78rem;opacity:0.85;">${p.weeks.length}-week progressive programme</div>
+    </div>
+    ${p.weeks.map(w=>`
+      <div style="background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="background:var(--gold);color:var(--green-dark);font-family:'Oswald',sans-serif;font-weight:700;font-size:0.9rem;padding:4px 12px;border-radius:20px;">Week ${w.week}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;color:var(--green-dark);font-weight:600;">${w.focus}</div>
+        </div>
+        ${w.sessions.map(s=>`
+          <div style="background:var(--off-white);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <div style="font-weight:600;font-size:0.82rem;color:var(--dark);">${s.name}</div>
+              <div style="font-size:0.7rem;background:var(--green);color:white;padding:2px 8px;border-radius:10px;font-weight:600;">${s.dur}</div>
+            </div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:3px;">
+              ${s.drills.map(d=>`<li style="font-size:0.75rem;color:var(--mid);padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--gold);">▸</span>${d}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
+    <div style="background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green-dark);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;">Coach Tips</div>
+      ${p.tips.map(t=>`<div style="font-size:0.78rem;color:var(--mid);padding:5px 0;border-bottom:1px solid var(--off-white);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-size:0.9rem;flex-shrink:0;">★</span>${t}</div>`).join('')}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════
+// SESSION PLANNER
+// ══════════════════════════════════
+const blockTypes = ['Warm-Up','Technical Drill','Tactical Work','Conditioned Game','Fitness','Cool-Down','Team Talk'];
+
+function addSessionBlock(type) {
+  const idx = sessionBlocks.length;
+  sessionBlocks.push({type, notes:'', duration:10});
+  renderSessionBlocks();
+}
+
+function renderSessionBlocks() {
+  const cont = document.getElementById('sessionBlocks');
+  if(!sessionBlocks.length) { cont.innerHTML=''; return; }
+  cont.innerHTML = sessionBlocks.map((b,i)=>`
+    <div style="background:white;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);margin-bottom:10px;border-left:4px solid var(--green);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <select onchange="sessionBlocks[${i}].type=this.value" style="flex:1;border:1.5px solid var(--light-gray);border-radius:8px;padding:6px;font-size:0.8rem;font-family:'Inter',sans-serif;outline:none;">
+          ${blockTypes.map(t=>`<option ${t===b.type?'selected':''}>${t}</option>`).join('')}
+        </select>
+        <input type="number" value="${b.duration}" min="5" max="60" step="5" onchange="sessionBlocks[${i}].duration=+this.value" style="width:55px;border:1.5px solid var(--light-gray);border-radius:8px;padding:6px;font-size:0.8rem;text-align:center;outline:none;">
+        <span style="font-size:0.7rem;color:var(--mid);">min</span>
+        <button onclick="removeBlock(${i})" style="background:#ffeeee;border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:#cc0000;font-size:0.8rem;">✕</button>
+      </div>
+      <textarea placeholder="Drills, notes, coaching points..." onchange="sessionBlocks[${i}].notes=this.value" style="width:100%;border:1.5px solid var(--light-gray);border-radius:8px;padding:8px;font-size:0.78rem;font-family:'Inter',sans-serif;resize:none;height:60px;outline:none;">${b.notes}</textarea>
+    </div>
+  `).join('');
+
+  const total = sessionBlocks.reduce((s,b)=>s+b.duration,0);
+  cont.innerHTML += `<div style="text-align:right;font-size:0.8rem;color:var(--mid);font-weight:600;margin-top:-4px;">Total: <span style="color:var(--green-dark);">${total} min</span></div>`;
+}
+
+function removeBlock(i) {
+  sessionBlocks.splice(i,1);
+  renderSessionBlocks();
+}
+
+function saveSession() {
+  const title = document.getElementById('sessionTitle').value.trim();
+  if(!title) { showToast('Add a session title first'); return; }
+  const session = {
+    id: Date.now(),
+    title,
+    age: document.getElementById('sessionAge').value,
+    sport: document.getElementById('sessionSport').value,
+    duration: document.getElementById('sessionDur').value,
+    blocks: [...sessionBlocks],
+    date: new Date().toLocaleDateString('en-IE'),
+  };
+  const saved = JSON.parse(localStorage.getItem('wt_sessions')||'[]');
+  saved.push(session);
+  localStorage.setItem('wt_sessions', JSON.stringify(saved));
+  showToast('Session saved ✓');
+  document.getElementById('sessionTitle').value='';
+  sessionBlocks=[];
+  renderSessionBlocks();
+}
+
+function showSavedSessions() {
+  const saved = JSON.parse(localStorage.getItem('wt_sessions')||'[]');
+  const cont = document.getElementById('savedSessionsList');
+  if(!saved.length) { cont.innerHTML='<div class="empty-state"><div class="emoji">📋</div><p>No saved sessions yet</p></div>'; return; }
+  cont.innerHTML = `<p class="section-title">Saved Sessions</p>` + saved.reverse().map(s=>`
+    <div style="background:white;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:0.95rem;color:var(--green-dark);">${s.title}</div>
+        <button onclick="deleteSession(${s.id})" style="background:none;border:none;color:#cc0000;cursor:pointer;font-size:0.8rem;">🗑</button>
+      </div>
+      <div style="font-size:0.72rem;color:var(--mid);">${s.sport||'—'} · ${s.age||'All ages'} · ${s.duration||'—'} · ${s.date}</div>
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">
+        ${(s.blocks||[]).map(b=>`<span style="background:var(--off-white);font-size:0.65rem;padding:2px 8px;border-radius:10px;color:var(--mid);">${b.type} ${b.duration}min</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteSession(id) {
+  const saved = JSON.parse(localStorage.getItem('wt_sessions')||'[]').filter(s=>s.id!==id);
+  localStorage.setItem('wt_sessions', JSON.stringify(saved));
+  showSavedSessions();
+  showToast('Session deleted');
+}
+
+// ══════════════════════════════════
+// TOAST
+// ══════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+renderDrills();
+renderFitness();
+</script>
+</body>
+</html>
