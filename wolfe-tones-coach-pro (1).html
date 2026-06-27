@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#006400">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="WT Coach Pro">
+<title>Wolfe Tones GAA Coach Pro</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+:root{--green:#006400;--gl:#008000;--gd:#004d00;--gold:#FFB800;--gol:#cc9200;--white:#fff;--ow:#f5f5f0;--river:#0070C0;--dark:#1a1a1a;--mid:#555;--lg:#e8e8e0;--r:10px;--sh:0 2px 12px rgba(0,100,0,0.12);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--ow);color:var(--dark);min-height:100vh;padding-bottom:80px;}
+.hdr{background:linear-gradient(135deg,var(--gd) 0%,var(--green) 60%,var(--gl) 100%);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.3);}
+.hi{display:flex;align-items:center;gap:12px;padding:10px 16px;}
+.ci{width:46px;height:46px;border-radius:4px;object-fit:contain;background:#fff;padding:2px;flex-shrink:0;}
+.ht h1{font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.04em;line-height:1.1;color:var(--gold);}
+.ht p{font-size:.66rem;color:rgba(255,255,255,.85);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
+.st{margin-left:auto;display:flex;background:rgba(0,0,0,.3);border-radius:20px;padding:3px;gap:2px;}
+.sb{background:none;border:none;color:rgba(255,255,255,.7);font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+.sb.active{background:var(--gold);color:var(--gd);}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--gd);display:flex;z-index:100;border-top:2px solid var(--gold);padding-bottom:env(safe-area-inset-bottom);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);font-family:'Inter',sans-serif;font-size:.6rem;font-weight:500;transition:all .2s;}
+.ni.active{color:var(--gold);}
+.ni svg{width:22px;height:22px;}
+.sc{display:none;padding:16px;}
+.sc.active{display:block;}
+.hero{background:linear-gradient(135deg,var(--gd),var(--green));border-radius:var(--r);padding:20px;color:#fff;margin-bottom:16px;}
+.hero h2{font-family:'Oswald',sans-serif;font-size:1.2rem;color:var(--gold);margin-bottom:4px;}
+.hero p{font-size:.82rem;opacity:.85;}
+.qg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.qc{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--sh);cursor:pointer;border-left:4px solid var(--green);transition:transform .15s;display:flex;flex-direction:column;gap:8px;}
+.qc:active{transform:scale(.97);}
+.qc.g{border-left-color:var(--gold);}
+.qc.b{border-left-color:var(--river);}
+.qi{font-size:1.6rem;}
+.qc h3{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:600;color:var(--gd);}
+.qc p{font-size:.72rem;color:var(--mid);}
+.stit{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;color:var(--gd);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.stit::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--gold),transparent);}
+.fr{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;}
+.fr::-webkit-scrollbar{display:none;}
+.fc{flex-shrink:0;background:#fff;border:1.5px solid var(--lg);border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;color:var(--mid);}
+.fc.active{background:var(--green);border-color:var(--green);color:#fff;}
+.ptabs{display:flex;background:var(--lg);border-radius:20px;padding:3px;gap:2px;margin-bottom:14px;}
+.pt{flex:1;background:none;border:none;padding:7px;border-radius:16px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--mid);transition:all .2s;letter-spacing:.03em;text-transform:uppercase;}
+.pt.active{background:var(--green);color:#fff;}
+.dl{display:flex;flex-direction:column;gap:12px;}
+.dc{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:transform .15s;border-left:4px solid var(--green);}
+.dc:active{transform:scale(.98);}
+.dc.football{border-left-color:var(--river);}
+.dc.both{border-left-color:var(--gold);}
+.dinfo{padding:14px;}
+.dbs{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.bg{font-size:.62rem;font-weight:600;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.04em;}
+.bgg{background:#e8f5e8;color:var(--gd);}
+.bgo{background:#fff8e1;color:#8a6000;}
+.bgb{background:#e3f2fd;color:#0055aa;}
+.bgr{background:#fce8e8;color:#aa0000;}
+.bgp{background:#f3e5f5;color:#6a1b9a;}
+.dtit{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--dark);}
+.ddesc{font-size:.78rem;color:var(--mid);line-height:1.55;margin-bottom:4px;}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;}
+.mo.open{display:flex;}
+.ms{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:20px;animation:su .3s ease;}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.mh{width:40px;height:4px;background:var(--lg);border-radius:2px;margin:0 auto 16px;}
+.mtit{font-family:'Oswald',sans-serif;font-size:1.25rem;font-weight:700;color:var(--gd);margin-bottom:6px;}
+.cm{width:100%;background:var(--gd);color:#fff;border:none;border-radius:var(--r);padding:13px;font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;margin-top:14px;letter-spacing:.04em;}
+.sl{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-top:10px;margin-bottom:4px;}
+.dpts{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.dpts li{font-size:.75rem;color:var(--mid);padding-left:14px;position:relative;line-height:1.45;}
+.dpts li::before{content:"\25B8";position:absolute;left:0;color:var(--gold);}
+.pw{background:#1a4a1a;border-radius:var(--r);padding:10px;margin-bottom:14px;touch-action:none;}
+#tc{width:100%;border-radius:6px;cursor:crosshair;display:block;}
+.tt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.tb{flex:1;min-width:60px;background:#fff;border:1.5px solid var(--lg);border-radius:8px;padding:8px 6px;font-size:.7rem;font-weight:600;cursor:pointer;text-align:center;color:var(--mid);transition:all .2s;}
+.tb.active,.tb:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.tb.d{border-color:#c00;color:#c00;}
+.tb.d:hover{background:#c00;color:#fff;}
+.fmr{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none;}
+.fmc{flex-shrink:0;background:#fff;border:1.5px solid var(--lg);border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--mid);transition:all .2s;}
+.fmc:hover,.fmc.active{background:var(--gold);border-color:var(--gold);color:var(--gd);}
+.pcr{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+.cd{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .2s;}
+.cd.sel{border-color:var(--dark);transform:scale(1.2);}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--gd);color:#fff;padding:10px 20px;border-radius:20px;font-size:.85rem;font-weight:500;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;border:1px solid var(--gold);}
+.toast.show{opacity:1;}
+.sgr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.sb2{background:var(--ow);border-radius:8px;padding:10px;text-align:center;}
+.sn{font-family:'Oswald',sans-serif;font-size:1.4rem;color:var(--gd);}
+.sl2{font-size:.68rem;color:var(--mid);}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <img class="ci" src="https://i.imgur.com/placeholder.png" id="crestImg" alt="WT Crest" onerror="this.style.display='none'">
+    <div id="crestSvg" style="width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);border-radius:6px;font-size:1.4rem;">🏑</div>
+    <div class="ht">
+      <h1>WOLFE TONES GAA</h1>
+      <p>Coach Pro · Na Sionna · Est. 1967</p>
+    </div>
+    <div class="st">
+      <button class="sb active" id="hBtn" onclick="setSport('hurling')">Hurling</button>
+      <button class="sb" id="fBtn" onclick="setSport('football')">Football</button>
+    </div>
+  </div>
+</header>
+
+<!-- HOME -->
+<div class="sc active" id="sc-home">
+  <div class="hero">
+    <h2>Go ndéana Dia gach rath oraibh!</h2>
+    <p>Wolfe Tones Na Sionna · Clare GAA · Est. 1967</p>
+  </div>
+  <p class="stit">Quick Access</p>
+  <div class="qg">
+    <div class="qc" onclick="showSc('drills')"><div class="qi">🏑</div><h3>Drill Library</h3><p>40+ drills, all ages</p></div>
+    <div class="qc g" onclick="showSc('tactical')"><div class="qi">🎯</div><h3>Tactical Board</h3><p>Interactive pitch</p></div>
+    <div class="qc b" onclick="showSc('fitness')"><div class="qi">💪</div><h3>Fitness Hub</h3><p>Age programmes</p></div>
+    <div class="qc" onclick="showSc('session')"><div class="qi">📋</div><h3>Session Planner</h3><p>Build &amp; save sessions</p></div>
+  </div>
+  <p class="stit">Stats</p>
+  <div style="background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-size:1.4rem;">☀️</span>
+      <div><div style="font-family:'Oswald',sans-serif;font-weight:600;color:var(--gd);">Abú Wolfe Tones!</div>
+      <div style="font-size:.75rem;color:var(--mid);">Switch sport above · tap a module to begin</div></div>
+    </div>
+    <div class="sgr">
+      <div class="sb2"><div class="sn">40+</div><div class="sl2">Drills</div></div>
+      <div class="sb2"><div class="sn" style="color:var(--gol)">8</div><div class="sl2">Formations</div></div>
+      <div class="sb2"><div class="sn" style="color:var(--river)">6</div><div class="sl2">Programmes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DRILLS -->
+<div class="sc" id="sc-drills">
+  <p class="stit">Drill Library</p>
+  <div class="ptabs" id="ageTabs">
+    <button class="pt active" onclick="setAge('all',this)">All</button>
+    <button class="pt" onclick="setAge('u10',this)">U10</button>
+    <button class="pt" onclick="setAge('u14',this)">U14</button>
+    <button class="pt" onclick="setAge('u18',this)">U18</button>
+    <button class="pt" onclick="setAge('adult',this)">Adult</button>
+  </div>
+  <div class="fr" id="catRow">
+    <button class="fc active" onclick="setCat('all',this)">All</button>
+    <button class="fc" onclick="setCat('skill',this)">Skill</button>
+    <button class="fc" onclick="setCat('shooting',this)">Shooting</button>
+    <button class="fc" onclick="setCat('passing',this)">Passing</button>
+    <button class="fc" onclick="setCat('fitness',this)">Fitness</button>
+    <button class="fc" onclick="setCat('tactical',this)">Tactical</button>
+    <button class="fc" onclick="setCat('warmup',this)">Warm-Up</button>
+    <button class="fc" onclick="setCat('game',this)">Games</button>
+  </div>
+  <div class="dl" id="drillList"></div>
+</div>
+
+<!-- TACTICAL -->
+<div class="sc" id="sc-tactical">
+  <p class="stit">Tactical Board</p>
+  <div class="ptabs">
+    <button class="pt active" onclick="setTS('hurling',this)">Hurling</button>
+    <button class="pt" onclick="setTS('football',this)">Football</button>
+  </div>
+  <p style="font-size:.75rem;color:var(--mid);margin-bottom:8px;font-weight:500;">Formations</p>
+  <div class="fmr" id="fmRow"></div>
+  <div class="tt">
+    <button class="tb active" id="t-player" onclick="setTool('player',this)">👤 Player</button>
+    <button class="tb" id="t-ball" onclick="setTool('ball',this)">⚪ Ball</button>
+    <button class="tb" id="t-arrow" onclick="setTool('arrow',this)">➡️ Arrow</button>
+    <button class="tb" id="t-draw" onclick="setTool('draw',this)">✏️ Draw</button>
+    <button class="tb" id="t-zone" onclick="setTool('zone',this)">⬜ Zone</button>
+    <button class="tb d" onclick="clearBoard()">🗑️ Clear</button>
+  </div>
+  <p style="font-size:.72rem;color:var(--mid);margin-bottom:6px;">Player colour</p>
+  <div class="pcr">
+    <div class="cd sel" style="background:#006400;" onclick="setPC('#006400',this)"></div>
+    <div class="cd" style="background:#cc0000;" onclick="setPC('#cc0000',this)"></div>
+    <div class="cd" style="background:#FFB800;" onclick="setPC('#FFB800',this)"></div>
+    <div class="cd" style="background:#0070C0;" onclick="setPC('#0070C0',this)"></div>
+    <div class="cd" style="background:#fff;border:1.5px solid #aaa;" onclick="setPC('#ffffff',this)"></div>
+    <button style="margin-left:auto;background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:.72rem;font-weight:600;cursor:pointer;" onclick="saveBoard()">💾 Save</button>
+    <button style="background:var(--gold);color:var(--gd);border:none;border-radius:8px;padding:6px 12px;font-size:.72rem;font-weight:600;cursor:pointer;" onclick="loadBoard()">📂 Load</button>
+  </div>
+  <div class="pw"><canvas id="tc"></canvas></div>
+  <p style="font-size:.7rem;color:rgba(255,255,255,.5);text-align:center;margin-top:-8px;background:#1a4a1a;padding:6px;border-radius:0 0 var(--r) var(--r);">Tap to place · Drag to move · Draw mode for lines</p>
+</div>
+
+<!-- FITNESS -->
+<div class="sc" id="sc-fitness">
+  <p class="stit">Fitness Hub</p>
+  <div class="ptabs">
+    <button class="pt active" onclick="setFA('u12',this)">U12</button>
+    <button class="pt" onclick="setFA('u16',this)">U16</button>
+    <button class="pt" onclick="setFA('adult',this)">Adult</button>
+  </div>
+  <div id="fitContent"></div>
+</div>
+
+<!-- SESSION -->
+<div class="sc" id="sc-session">
+  <p class="stit">Session Planner</p>
+  <div style="background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:14px;">
+    <input id="sesTitle" type="text" placeholder="Session title e.g. Tuesday Training" style="width:100%;border:1.5px solid var(--lg);border-radius:8px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:.85rem;margin-bottom:10px;outline:none;">
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <select id="sesAge" style="flex:1;border:1.5px solid var(--lg);border-radius:8px;padding:8px;font-size:.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Age Group</option>
+        <option>U8</option><option>U10</option><option>U12</option><option>U14</option><option>U16</option><option>U18</option><option>Adult</option>
+      </select>
+      <select id="sesSport" style="flex:1;border:1.5px solid var(--lg);border-radius:8px;padding:8px;font-size:.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Sport</option>
+        <option>Hurling</option><option>Football</option><option>Both</option>
+      </select>
+      <select id="sesDur" style="flex:1;border:1.5px solid var(--lg);border-radius:8px;padding:8px;font-size:.8rem;color:var(--mid);font-family:'Inter',sans-serif;outline:none;">
+        <option value="">Duration</option>
+        <option>45 min</option><option>60 min</option><option>75 min</option><option>90 min</option>
+      </select>
+    </div>
+    <button onclick="addBlock()" style="width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;letter-spacing:.04em;">+ Add Block</button>
+  </div>
+  <div id="sesBlocks"></div>
+  <div style="display:flex;gap:8px;margin-top:14px;">
+    <button onclick="saveSession()" style="flex:1;background:var(--gd);color:#fff;border:none;border-radius:8px;padding:12px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;">💾 Save Session</button>
+    <button onclick="showSaved()" style="flex:1;background:var(--gold);color:var(--gd);border:none;border-radius:8px;padding:12px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;">📂 My Sessions</button>
+  </div>
+  <div id="savedList" style="margin-top:14px;"></div>
+</div>
+
+<nav class="bnav">
+  <button class="ni active" onclick="showSc('home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button>
+  <button class="ni" onclick="showSc('drills')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Drills</button>
+  <button class="ni" onclick="showSc('tactical')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>Board</button>
+  <button class="ni" onclick="showSc('fitness')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>Fitness</button>
+  <button class="ni" onclick="showSc('session')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8zm0-4h8v2H8z"/></svg>Sessions</button>
+</nav>
+
+<!-- MODAL -->
+<div class="mo" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="ms">
+    <div class="mh"></div>
+    <div id="mBody"></div>
+    <button class="cm" onclick="document.getElementById('modal').classList.remove('open')">✓ Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var CS='hurling',CA='all',CC='all';
+var TS='hurling',TOOL='player',PC='#006400';
+var TP=[],TB2=[],TL=[],TZ=[],DP=[],DRAW=false,DI=null,DT=null;
+var SB=[],CFA='u12';
+var TC,TX,TW,TH;
+
+var DRILLS=[
+{id:1,sport:'hurling',age:['u8','u10','u14','u18','adult'],cat:'skill',title:'Solo & Ground Strike Circuit',
+desc:'Players solo the ball (alternating hands) to a cone 20m away, lift it and strike at a target. Walk back and repeat. Emphasise correct solo technique and a composed, balanced strike.',
+pts:['Keep hurl low on the solo — push down, do not throw ball too high','Alternate dominant and non-dominant hand every rep','Eyes up before striking — pick your target before swinging','Full body rotation on the strike — use the hips','Stay composed — slow down to maintain quality'],
+prog:['Add a passive defender beside the striker','Extend solo distance to 35m','Time challenge: how many clean strikes in 3 minutes?','Make it competitive — first to 5 clean strikes wins']},
+{id:2,sport:'hurling',age:['u10','u14','u18','adult'],cat:'skill',title:'Catching & Overhead Striking',
+desc:'In pairs 15-20m apart, one player lobs a high ball. Catcher calls MINE!, catches with both hands above the head, and returns with an overhead strike. Focus on reading the ball flight and taking it at the highest point.',
+pts:['Shout "MINE!" clearly — build the habit for match play','Watch the ball all the way into the hands','Fingers up, thumbs close together for overhead catches','Full swing on return strike — commit to the shot','Non-dominant side catching is equally important'],
+prog:['Move to 25-30m apart','Catcher must move 3m left or right before catching','Add gentle opposing pressure','Switch to harder puck for the feed']},
+{id:3,sport:'hurling',age:['u14','u18','adult'],cat:'shooting',title:'Sideline Cut Accuracy',
+desc:'Five cones along the sideline at different angles (15m-40m). Players take a sideline cut from each position aiming between two poles. Focus on correct stance — feet pointing slightly forward — and the low follow-through of a good sideline cut.',
+pts:['Ball placed slightly forward of the lead foot','Low, controlled swing — hurl should finish pointing at target','Head completely still on contact','Non-dominant side practice is essential','Weight shifted to front foot at contact'],
+prog:['Tighter angles from the corner flag','Add a passive chaser arriving as player strikes','5-second time limit','Points system: wide=0, posts=1, top third=2']},
+{id:4,sport:'hurling',age:['u14','u18','adult'],cat:'tactical',title:'Structured Puck-Out Patterns',
+desc:'Goalkeeper works with two midfielders and two half-backs on puck-out sequences. Three options: short to corner-back, medium to half-back, long to midfielder. Coach signals the option. Goalkeeper reads the press and chooses correctly.',
+pts:['Goalkeeper reads the press before committing','Decoy runs create space for the primary option','Midfielders must call clearly — verbal and visual signal','Fielder must commit to claiming — no half-hearted jumps','Pace of practice mimics match intensity'],
+prog:['Add two active opposition midfielders','Goalkeeper chooses without coach signal','Extend to 12v12 phase play','Video the patterns — identify breakdowns']},
+{id:5,sport:'hurling',age:['u10','u14','u18','adult'],cat:'warmup',title:'Hurling Tag & Ground Striking',
+desc:'All players have a hurl and ball in a 20x20m grid. Two taggers try to touch players. When tagged, a player must complete 5 controlled ground strikes before rejoining. Taggers swap every 2 minutes.',
+pts:['Keep hurl under control at all times — safety first','Constant movement — do not ball-watch while moving','Ground strike technique: keep ball in front, correct grip','Taggers must use footwork, not just charge','Restart as fast as possible after completing strikes'],
+prog:['Reduce grid to 15x15m','Add a third tagger','Players must solo once before they can be tagged','Time challenge: how many tags in 2 minutes?']},
+{id:6,sport:'hurling',age:['u14','u18','adult'],cat:'passing',title:'Hand Pass Triangles — Rapid Release',
+desc:'Three players form a triangle 8-10m apart. Rapid hand passing: receive, one touch to set, one hand pass. Immediate movement after each pass. Ball should rarely hit the ground. 2-minute bursts.',
+pts:['Short, punchy hand pass — punch through the ball','Move immediately after releasing — pass and run are simultaneous','Call for the ball verbally — HERE! or name of player','Head up at all times — know where teammates are','Every touch must mean something'],
+prog:['Diamond with 4 players and a defender in the middle','Reduce grid — increase difficulty','Same-hand pass only for one round','Minimum 3 passes before a shot']},
+{id:7,sport:'hurling',age:['u18','adult'],cat:'fitness',title:'Hurling Interval Sprint Drill',
+desc:'40m straight. Players solo the ball sprinting the full 40m, then jog back without the ball. 8 reps with 30 seconds rest between sets of 4. Mimics GAA-specific sprint work with ball in hand.',
+pts:['Maintain ball control at sprinting pace — non-negotiable','Work:rest 1:1 — full effort on sprint, full recovery on jog','Alternate dominant/non-dominant hand every rep','Strike the ball at the far cone — combine conditioning with shooting','Coach calls the start — simulate match-like acceleration'],
+prog:['Increase to 12 reps','Shorten rest to 20 seconds','Add tackle bag at 20m to sidestep around','Time each sprint and track improvement']},
+{id:8,sport:'hurling',age:['u8','u10'],cat:'game',title:'Ground Hurling Small-Sided Game',
+desc:'4v4 in a 25x20m grid. Scoring only from ground strikes — ball must stay below knee height. Any ball lifted above the knee = free to opposition. Forces players to master ground hurling — the foundation of the game.',
+pts:['Ball must stay on the ground — coach reinforces consistently','Trap before you strike — take control first','Small goals reward accuracy','Keep score — let competition drive intensity','Coach narrates coaching points during the game'],
+prog:['Allow one solo before striking','Increase grid size as technique improves','Goalkeepers added — two saves wins an extra point','Introduce hand passing as an option']},
+{id:9,sport:'hurling',age:['u18','adult'],cat:'tactical',title:'Half-Back Line Covering & Sweeping',
+desc:'Three half-backs work as a unit. A feeder passes to forwards in the attack. Half-backs must read the pass, communicate, drop one as sweeper if ball goes centrally, and press wide when ball goes to the wing.',
+pts:['Centre half-back sets the defensive shape — communicate constantly','Sweeper drops 5m behind the line when ball is central','Wide half-back presses when ball is on their side','Never leave a gap between the three — maintain compactness','Quick recovery position after a clearance'],
+prog:['Add live forwards — 2v3','Include midfielders dropping to link','Introduce full 9v9 phase play','Review with video — map zones covered']},
+{id:10,sport:'hurling',age:['u14','u18','adult'],cat:'tactical',title:'Press Trigger & Shape Recovery',
+desc:'A designated forward triggers the press on a signal. All forwards set up a coordinated press on opposition puck-out. Remaining players practice rapid defensive shape recovery when the press is broken.',
+pts:['Press triggered by one player — the rest react immediately','Do not over-commit — if beaten, retreat at pace','Defensive shape priority over individual duels when retreating','PRESS! shouted by the trigger player','Shape recovery must be completed within 5 seconds'],
+prog:['Full 15v15 from puck-out','Time the press: how long before opponents break it?','Add a secondary press option','Vary the trigger: sometimes voice, sometimes visual']},
+{id:11,sport:'hurling',age:['u8','u10'],cat:'skill',title:'Lift & Solo Continuous Movement',
+desc:'Each player has a sliotar. Roll the ball, jog behind it, practice lifting with the hurl using the correct scooping technique. Complete 3 solos before rolling again. Continuous movement throughout the grid.',
+pts:['Scoop, do not stab — roll the hurl under the ball smoothly','Ball on the road of the hurl — not the tip, not the boss','Solo: push the ball up gently, do not throw it','Try to lift and solo on the weaker side too','Praise every successful lift — build confidence'],
+prog:['Lift, 3 solos, then a light ground strike at a cone','Pair players: one lifts and feeds to partner for catching','Increase to 5 solos between lifts','Time challenge: how many lifts in 30 seconds?']},
+{id:12,sport:'hurling',age:['u14','u18','adult'],cat:'skill',title:'First Touch & Strike Under Pressure',
+desc:'Groups of 3: feeder, striker, chaser. Feeder pucks a high ball to the striker from 20m. Striker controls the first touch, sets themselves, and strikes on goal within 3 seconds. Chaser applies light pressure from behind.',
+pts:['First touch is everything — meet the ball, do not let it meet you','Controlled deflection to the ground is fine — no need to always catch','3-second limit forces quick thinking','Chaser: practice closing speed without fouling','Use body to shield ball from chaser before striking'],
+prog:['Chaser becomes active — can try to block','Two chasers','Feeder randomly pucks high or low — striker adapts','Add a goalkeeper']},
+{id:13,sport:'hurling',age:['u14','u18','adult'],cat:'passing',title:'Reverse Puck — Striking Across the Body',
+desc:'Player A has the ball on their right (dominant) but player B has moved 10m to their left. Player A delivers a clean left-handed reverse puck across the body without switching the hurl. 10 reps each side.',
+pts:['Grip does not change on the reverse puck — same hands, opposite swing','Open the body toward the target — rotate at the hips','Contact: the boss of the hurl makes contact, not the edge','Hit the target, do not just swing hard','This skill wins matches — practice it as much as your dominant side'],
+prog:['Move to 20m apart','Combine with a solo run to the left before the reverse puck','Add a defender closing down','Score a point for each clean hit — 20 reps total']},
+{id:14,sport:'hurling',age:['u18','adult'],cat:'tactical',title:'21-Metre Free & 65 Routine',
+desc:'Three-part dead ball practice: 21m free — direct shot; 65 lifted into the square for a runner; 65 struck directly for a point. Rotation with two strikers and two runners.',
+pts:['21m free: low and powerful — keeper expects it high, go low','65 lifted: runners call their run, striker reads the timing','65 struck: as much height as possible, use the crossbar as a target','Goalkeeper: attack the 65 lifted — claim it','All three: visualise the outcome before striking'],
+prog:['Practice in different wind conditions','Add opposition defenders to both 65 options','Strike must be taken within 15 seconds','Track percentage success rate over 10 weeks']},
+{id:15,sport:'football',age:['u8','u10','u14','u18','adult'],cat:'skill',title:'Solo, Bounce & Kick Pass Pairs',
+desc:'In pairs 15-20m apart, player A solos toward player B, delivers a clean kick pass, then jogs back. Alternate dominant and non-dominant foot on each round. The most fundamental football drill.',
+pts:['Legal carry: solo — bounce — solo — bounce — no two bounces in a row','Point the toe down, inside of the foot makes contact on the kick','Ball held with two hands, eyes on target, kick through the ball','Non-dominant foot is crucial — dedicate half the drill to your weaker side','Call your partner to the space, not to where they are'],
+prog:['Add movement: player B moves left or right before catching','Extend to 30m','Introduce chest pass for wet weather simulation','Three-player triangle with movement']},
+{id:16,sport:'football',age:['u14','u18','adult'],cat:'shooting',title:'Shooting Under Defensive Pressure',
+desc:'Feeder delivers to a forward 20m from goal. A passive defender (arms out, no spoiling) approaches as the ball arrives. Forward must control, create space, and score within 8 seconds.',
+pts:['Create space before the shot — do not shoot with defender square on','Low body shot from 20m+ when shooting for a goal','Fist over the bar if a goal is not on — maximise scoring','Foot position sets up the shot — get hips facing the target','Decide shot type before receiving — goal or point?'],
+prog:['Active defender — can block but not body-check','Reduce time limit to 5 seconds','Add a goalkeeper','Combine with a kick pass entry to the forward']},
+{id:17,sport:'football',age:['u18','adult'],cat:'tactical',title:'Kick-Out Strategy — Three Options',
+desc:'Goalkeeper rehearses three kick-out options: short to corner-back; medium to half-back; long targeted at a midfielder with decoy run. Opposition applies varying press. Goalkeeper reads the press and selects the correct option.',
+pts:['Goalkeeper reads the press BEFORE striking — look up','Decoy runs are essential — forwards commit to the false option','Short option kicker must arrive to support — do not just play and stand','Midfielders call loudly and commit to every contest','Practice in bad weather — wet ball changes kick-out strategy'],
+prog:['Add two active opposition press players','Goalkeeper chooses without a coach call','Full 15v15 kick-out contest','Video analysis: map where kick-outs go and win percentage']},
+{id:18,sport:'football',age:['u8','u10','u14'],cat:'warmup',title:'Possession Tag — Keep Ball',
+desc:'One team of 5 (bibs) keeps possession using hand passes only in a 15x15m grid. Other 5 try to win it back. Every time the ball hits the ground or goes out, it is a turnover. Count consecutive passes.',
+pts:['Support the ball carrier immediately — get into their eyeline','Create passing angles — move to space, not to your teammate','Short, accurate hand pass under pressure','Protect the ball with your body when under pressure','Constant verbal communication: HERE!'],
+prog:['Reduce grid to 12x12m','Add one extra defender','Non-dominant hand only','Score 1 point for every 5 consecutive passes']},
+{id:19,sport:'football',age:['u14','u18','adult'],cat:'passing',title:'Inside Pass & First-Touch Finish',
+desc:'Midfielder delivers a kick pass into a forward. Forward takes one controlled touch, creates a shooting angle, and scores. Three passers and three forwards simultaneously. Players rotate after each rep.',
+pts:['Forward leads at the right time — read the pass before it is made','Weight of pass onto the forward's preferred foot where possible','First touch sets up the shot — bad touch = wasted opportunity','Height and pace of kick pass are both critical','Forward: decide shot type before receiving'],
+prog:['Vary pass height — high ball, flat ball, rolling ball','Add active defender alongside the forward','Introduce goalkeeper on second series','Forward must complete a solo before shooting']},
+{id:20,sport:'football',age:['u18','adult'],cat:'tactical',title:'High Press & Counter-Attack Transition',
+desc:'Six forwards set up a high press on the kick-out. When the ball is turned over, the transition to attack must be immediate — within 3 seconds. Three players attack at pace. Coach freezes play to assess positions.',
+pts:['Press trigger player must not over-commit — stay disciplined','Transition: nearest player to turnover attacks, others support','Attack at pace — teams are most vulnerable in the 3 seconds after losing the ball','Defensive shape: 3 hold shape while 3 press','GO! signals the counter — communication is critical'],
+prog:['Full 15v15 from kick-out','Time the press — how quickly is the ball turned over?','Add a second transition: attack-press-counter-defend','Video analysis of transition speed and positioning']},
+{id:21,sport:'football',age:['u18','adult'],cat:'fitness',title:'GAA Shuttle Fitness — Ball in Hand',
+desc:'Three cones at 0m, 10m, 20m. Player starts at 0m with ball. Sprint to 10m, bounce, sprint to 20m, solo back to 10m, hand pass to partner, sprint to 0m. 8 reps, 20 seconds rest between.',
+pts:['Low centre of gravity on direction changes','Ball in the outside hand on changes of direction','Explosive off the line on every rep — first step is the fastest','Maintain ball control as fatigue builds — that is the point','Partner hand-pass must be accurate'],
+prog:['Increase to 12 reps','Reduce rest to 15 seconds','Add a shooting action at the end of each rep','Time each rep — track improvement over 8 weeks']},
+{id:22,sport:'football',age:['u10','u14'],cat:'skill',title:'Mark Claiming — High Ball Fielding',
+desc:'Kicker delivers a high ball from 25m. Fielder calls MARK! clearly, takes three steps forward to meet the ball, catches above the head with both hands. After claiming the mark, they place and score.',
+pts:['Call MARK! loudly and clearly before the ball arrives','Attack the ball — move forward, do not wait for it','Take the ball at the highest point — both hands, fingers up','After the mark: compose yourself, place the ball, score','Practice the jump and catch without a kicker first'],
+prog:['Add a passive chaser behind the fielder','Use different kick types — high, low, wet ball simulation','Fielder must complete one solo before scoring','Competitive: fielder v chaser — who claims it?']},
+{id:23,sport:'football',age:['u18','adult'],cat:'game',title:'Football 8v8 — Score to Win Possession',
+desc:'8v8 on a reduced pitch (45x35m). Additional rule: team that scores gets immediate kick-out AND retains possession. This rewards scoring and creates a high-energy game developing composure in front of goal.',
+pts:['Score first — possession is the reward','Defenders: conceding means you lose possession too','Goalkeeper: restart quickly to exploit scoring team's high shape','Forwards: shots on sight — the game rewards shooting','Midfielders: get the ball forward quickly'],
+prog:['Normal rules: opposition gets the kick-out','Scoring team gets 30 seconds uncontested possession after a score','Reduce pitch size','Score from a mark worth double — encourages high-fielding']},
+{id:24,sport:'both',age:['u10','u14','u18','adult'],cat:'warmup',title:'Rondo Warm-Up — 5v2 Keep Ball',
+desc:'Five players form a loose circle (12m diameter) with two defenders inside. Hurling: hand passing only. Football: hand and kick passing. Defenders try to win possession. Player who loses it swaps with a defender. 2-minute rotations.',
+pts:['One or two touches maximum — slow touch = easy tackle','Move immediately after every pass — static players invite pressure','Defenders must work as a pair — split the space between you','Call for the ball verbally — communication is a skill, train it','Ball to feet for football; clean pass for hurling'],
+prog:['4v1 for more pressure','Reduce circle size to 8m','Left hand only restriction for one round','Three consecutive passes = one point']},
+{id:25,sport:'both',age:['u14','u18','adult'],cat:'fitness',title:'4-Corner Conditioning',
+desc:'Four cones mark a 20x20m square. Move around with specific patterns: Sprint side 1, high knees side 2, backpedal side 3, shuffle side 4. Add ball skills at each corner for set 2. 6 full rotations, 90 seconds rest between.',
+pts:['Maximum effort on the sprint side — this is not a jog','Maintain correct movement mechanics on each side','Ball skills at corners must be controlled — technique under fatigue','Call switches clearly in a group','Start without ball, add ball on second set'],
+prog:['Reduce rest between rotations to 60 seconds','Add a diagonal sprint from the centre','Increase sprint side to 30m','Carry a ball for the entire circuit from rotation 3']},
+{id:26,sport:'both',age:['u8','u10'],cat:'game',title:'Freeze Tag with Ball Rescue',
+desc:'Two taggers move freely in a 20x20m grid. When tagged, players freeze (arms out). A frozen player is unfrozen when a teammate rolls/passes the ball through their legs. Rotate taggers every 90 seconds.',
+pts:['Keep moving at all times','Look for frozen teammates — rescue them as soon as safe','Taggers work as a pair — split the grid','Ball rolling for rescue: accurate and low','Safety first — no body contact from taggers'],
+prog:['Two taggers instead of one','Frozen players must perform 5 hops before being rescuable','Add a safe zone (cone circle) lasting only 5 seconds','Team version: which team can freeze everyone fastest?']},
+{id:27,sport:'both',age:['u8','u10','u14'],cat:'warmup',title:'Agility Ladder — Ball Skill Integration',
+desc:'6m agility ladder. Different foot patterns through the ladder. At the end: hurling — lift and solo twice; football — bounce and hand pass to partner. Return to queue. 3 rounds of each pattern.',
+pts:['Quick, light feet through the ladder — do not look down','Explosive exit from the last rung — attack the ball skill','Ball skill must be composed — fast feet, then controlled skill','Partner must be ready to receive — both working simultaneously','Vary the ball skill at the exit on each round'],
+prog:['Speed the ladder pace — timed challenge','Add a direction change at the end before the ball skill','Combine two skills at the exit (e.g. solo + overhead strike)','Eyes closed on the last 2 rungs — develops proprioception']},
+{id:28,sport:'both',age:['u14','u18','adult'],cat:'tactical',title:'Transition Drill — Turnover to Attack',
+desc:'Team A attacks (6 players) against Team B (4 defenders). When Team B turns the ball over, they immediately become the attacking team and Team A must transition to defend. Turnover team has 5 seconds to break forward.',
+pts:['Transition is the most dangerous moment in a game — exploit it','First pass after a turnover must go forward — not sideways','Attacking team: get numbers forward in front of the ball within 3 seconds','Defending team: do not chase the ball — recover your shape','BREAK! called when your team wins the ball'],
+prog:['6v6 — equal numbers','Time limit: score within 10 seconds or possession returns','Video analysis: measure time from turnover to scoring opportunity','Full 15v15 from transition scenarios']},
+{id:29,sport:'both',age:['u14','u18','adult'],cat:'game',title:'No Solo/Bounce Conditioned Game',
+desc:'8v8 game but solo and bounce are not allowed. Players must hand-pass or kick-pass immediately on receiving. Forces quick thinking, one-touch play, accurate distribution, and constant support running.',
+pts:['Receive facing forward where possible — no time to turn','Move immediately as you hand pass — create the next option','Off-ball: position yourself so teammate can pass instantly','Do not run to where the ball IS — run to where it will be','Kick pass must be short and accurate'],
+prog:['One solo or bounce allowed before passing — slight relaxation','Move to a full game with habits embedded','One team plays with restriction, other plays freely','Count how many passes are completed before a score']},
+{id:30,sport:'both',age:['u10','u14','u18','adult'],cat:'game',title:'End-Zone Game — Pass Into Zone to Score',
+desc:'Two teams 6v6 on a 40x30m pitch. No goals — two end zones (5m deep) at each end. To score, a player must receive a hand pass while standing inside the end zone. 1 point per score.',
+pts:['Receivers in the end zone: time your run — arrive as the ball does','Pass into SPACE ahead of the receiver, not to their feet','Defend the space, not the player — do not leave end zone unguarded','Width: stretch the opposition — use all 30m of pitch width','ZONE! called by a player entering the end zone'],
+prog:['Must complete 3 passes before scoring','End zone shrunk to 3m deep','2 players in end zone = 2 points','Switch to kick passing only for the middle third']},
+{id:31,sport:'both',age:['u18','adult'],cat:'fitness',title:'Repeated Sprint Ability — 30m Intervals',
+desc:'10 x 30m sprints with 25 seconds active recovery (light jog back). Sprint effort: 90%+ of maximum. Track the time of each sprint — good players should not slow down by more than 5% by rep 10.',
+pts:['90%+ effort on every sprint — this is not a jog','Time the recovery walk — do not extend beyond 25 seconds','Drive the knees and arms — full sprint mechanics','Stay tall during the sprint — do not slump with fatigue','Sprint 1 and sprint 10 should feel the same'],
+prog:['Increase to 15 sprints total','Add a ball: solo/bounce during the jog recovery only','Reduce recovery to 20 seconds','End with a full sprint time trial: 200m timed']},
+{id:32,sport:'both',age:['u10','u14'],cat:'game',title:'Ball King — Possession Game',
+desc:'All players have a ball each in a 20x20m grid. When GO is called, players dribble/solo their own ball while trying to knock everyone else's ball out of the grid. If your ball goes out, you are eliminated.',
+pts:['Keep your ball close — do not let it get away from you','Use your body to shield — legal body position between defender and ball','Attack when there are fewer players — be strategic','Keep moving, never static','Eliminated players: come back after completing 10 juggles'],
+prog:['Reduce grid size as players are eliminated','Non-dominant hand/foot only for the last 5 players','Two balls each for a harder version','Keep score across multiple rounds']},
+{id:33,sport:'both',age:['u14','u18','adult'],cat:'tactical',title:'Defensive Structure — Zonal v Man-to-Man',
+desc:'Two sessions back-to-back: zonal marking then man-to-man. Coach attacks with 7 players against 7 defenders for 5 minutes each. After each session, discuss: which works better in each situation?',
+pts:['Zonal: you own a space, not a player — move with the ball','Man-to-man: your job is your man — do not lose him','Communication is MORE important in zonal','Call the switch clearly in man-to-man','Both: compact shape, deny space in front of goal'],
+prog:['11v11 with full match rules','Switch systems mid-game on coach signal','Opponents use specific play patterns — defenders must adapt','Video analysis: which system conceded fewer scores?']},
+{id:34,sport:'both',age:['u8','u10','u14'],cat:'warmup',title:'Simon Says — GAA Edition',
+desc:'Coach plays Simon Says using GAA skills. Examples: Simon says solo the ball twice!, Simon says do a high catch!, Pretend to sideline cut! (no Simon Says = elimination). Works for both codes.',
+pts:['Listen carefully — follow only Simon Says instructions','Move immediately on a Simon Says command','Use correct technique even here — habits form in warm-ups','Players who are out: keep them active — 5 hand passes','Last player standing leads the next round'],
+prog:['Increase speed of instructions','Mix GAA vocabulary with physical actions','Players take turns being Simon — develops confidence','Circle format: players re-enter after 30 seconds']},
+{id:35,sport:'both',age:['u10','u14'],cat:'skill',title:'Relay Race — Ball Skills Relay',
+desc:'Teams of 4 compete in a relay. Leg 1: solo to 20m cone; Leg 2: hand pass to target cone and return; Leg 3: bounce the ball 5 times while running; Leg 4: sprint and pass to next teammate.',
+pts:['Accuracy over speed — a dropped ball means restart that leg','Handover/pass to next teammate must be clean','Coach demonstrates each leg before the relay starts','Rotate which team member does each leg','Cheer on teammates — build team culture'],
+prog:['Change ball skills each round','Add obstacles to weave through on each leg','Non-dominant hand/foot required on one leg','Increase leg distances for older age groups']},
+{id:36,sport:'hurling',age:['u18','adult'],cat:'game',title:'Hurling 10v10 Phase Play — Zoned',
+desc:'Full pitch in thirds. 10v10. Must complete 4 passes in the middle third before entering the attack zone. If turned over in the defensive third, attacking team loses the ball — no press allowed there.',
+pts:['4 passes in the middle third rewards patience and possession','Do not rush into the attack zone — wait for the right moment','Defensive third: no press — encourages the opposition to attack','Look for the overlap before committing to attack zone','Goalkeeper: puck-outs must reach the middle third or it is a free'],
+prog:['Reduce required passes to 3','Allow press anywhere on the pitch','Introduce 15v15 for full match conditions','Video analysis: map touch maps and possession stats']},
+{id:37,sport:'football',age:['u18','adult'],cat:'tactical',title:'Kickout Possession — Winning Your Own Ball',
+desc:'Full kickout simulation with two midfielders, two half-backs and two half-forwards versus four opposition players in the contest zone. Goalkeeper kicks long, short, and medium options while six contestors battle for the ball.',
+pts:['Read the kick before it leaves the goalkeeper's boot — track body angle','Call for the ball loudly — your teammate needs to hear you before it arrives','First pass after winning: go forward or recycle quickly sideways','If outnumbered: hold the ball and wait for support','Goalkeeper: mix the options — do not become predictable'],
+prog:['8v8 with full contested kickout','Kickout won = immediate attack','Time how quickly the winning team scores','Video: what percentage of kickouts does each team win?']},
+{id:38,sport:'both',age:['u14','u18','adult'],cat:'game',title:'Modified 7-Aside — Restricted Zones',
+desc:'7v7 game on a half pitch divided into three horizontal zones. Defensive zone: hand pass only. Middle zone: hand or short kick pass. Attacking zone: anything goes. This forces short ball in defence and rewards skillful attack.',
+pts:['Defensive zone: composure — never give it away in your own half','Middle zone: link the play — your job is to get it to the forward line','Attacking zone: be decisive — create, shoot, or set up the shot','Movement: drift between zones to create overloads','Goalkeeper: practice puck-out/kickout from game scenarios'],
+prog:['Remove zone restriction in the defensive zone for advanced teams','Only one bounce/solo before passing in the middle zone','Play without goalkeepers — all scores count double','Score 2 for a goal scored from a combination of all three zones']},
+{id:39,sport:'both',age:['u8','u10','u14','u18','adult'],cat:'warmup',title:'Stretching Routine — Dynamic Warm-Up',
+desc:'Structured 8-minute dynamic warm-up. Leg swings (forward and sideways) x 10 each. Walking lunges x 20m. High knees x 20m. Butt kicks x 20m. Arm circles (forward and backward). Hip rotations. Calf raises x 15. Light jog x 2 laps.',
+pts:['Dynamic stretching only before training — static stretching after','Controlled movement — do not rush through the routine','Full range of motion on every exercise','Deep breathing throughout','Coach leads and narrates — explain why each stretch matters'],
+prog:['Add hurling-specific movements: shadow swings, solo steps','Include game-related movements: shuffle, sprint, backpedal','Pair players for partner stretches in the static cooldown','Time the routine: 8 minutes maximum']},
+{id:40,sport:'both',age:['u18','adult'],cat:'tactical',title:'Half-Time Analysis & Re-Setup',
+desc:'Structured coaching session simulating a half-time talk. Coach presents a specific tactical problem. Players discuss in small groups for 2 minutes. Each group feeds back one solution. Coach integrates solutions and assigns roles.',
+pts:['Listen carefully — understand the problem before you respond','Small group discussion develops leadership in all players','One specific, actionable solution per group — not a list','The player with the solution must explain it clearly','After implementation: evaluate if the adjustment made a difference'],
+prog:['Players are given the problem with no coach input — self-managed','Video clip of the first half played before the discussion','Players rotate as designated captain who leads the talk','Evaluate a different tactical problem every training session']}
+];
+
+var FITNESS={
+u12:{title:'U12 Foundation Fitness',weeks:[
+  {week:1,focus:'Movement Foundations',sessions:[
+    {name:'Agility & Fun Games',dur:'30 min',drills:['4-Corner Tag game','Animal Movement Runs (bear crawl, crab walk, frog jumps)','Beanbag Balance Relay — balance on head while dribbling']},
+    {name:'Speed Basics',dur:'25 min',drills:['10m Acceleration Sprints x 8','Skipping Variations: forward, backward, double-under','Side Shuffle Race: 10m sideways sprint x 6']}]},
+  {week:2,focus:'Coordination & Balance',sessions:[
+    {name:'Ladder & Balance Work',dur:'30 min',drills:['Agility Ladder: single foot, two feet, lateral shuffle','Single-Leg Balance: 15 seconds each side x 3 sets','Hurdle Hops: forward and lateral over 20cm cones']},
+    {name:'Ball & Movement',dur:'30 min',drills:['Solo/Bounce Circuit: move through 6 cones with ball','Catch & Turn: catch with both hands, 180-degree turn','Partner Mirror Drill: one leads, one copies — 30 second bursts']}]},
+  {week:3,focus:'Endurance Foundations',sessions:[
+    {name:'Continuous Play',dur:'35 min',drills:['Endurance Rondo: 5v2 keep ball, 3 minute rotations','3v3 Keep Ball across the pitch — 5 minute games','Small-Sided 5v5 Game to finish — full effort']}]}],
+tips:['Keep sessions fun and game-based — enjoyment is the priority','Rest:work ratio minimum 1:2','No heavy lifting at U12 — bodyweight only','Focus on ABCs: Agility, Balance, Coordination, Speed','Praise effort, not just outcome']},
+u16:{title:'U16 Athletic Development',weeks:[
+  {week:1,focus:'Speed & Power Introduction',sessions:[
+    {name:'Sprint Mechanics',dur:'40 min',drills:['A-Skip & B-Skip: 3 x 20m each','40m Acceleration Sprint x 6 @ 90% effort','Resisted Band Sprint: 20m x 4','Flying 20s: standing start, 20m max sprint x 5']},
+    {name:'Lower Body Power',dur:'35 min',drills:['Broad Jump: 3 sets of 5 reps','Box Jumps (30cm box): 3 x 6','Single-Leg Squat Hold: 3 x 30 seconds each leg','Glute Bridges: 3 x 15 — squeeze at the top']}]},
+  {week:2,focus:'Repeated Sprint Ability',sessions:[
+    {name:'Interval Training',dur:'40 min',drills:['5 x 100m @ 85% — 90 seconds rest between','Active recovery jog: 200m at easy pace','200m time trial to finish — record the time']},
+    {name:'GAA Shuttles',dur:'35 min',drills:['5-10-5 Shuttle x 8 — 30 seconds rest','Sprint-Backpedal-Sprint: 10m forward, 5m back, 10m forward x 6','Illinois Agility Test x 3 — improve time each week']}]},
+  {week:3,focus:'Strength Endurance',sessions:[
+    {name:'Circuit Training',dur:'45 min',drills:['Press-ups x 15 (or max)','Squat Jumps x 10 — full extension at top','Plank Hold: 45 seconds','Lunge Walk: 20m forward','Repeat circuit x 4 — 60 seconds rest between']}]}],
+tips:['Introduce strength work progressively — form before load','Prioritise technical form over number of reps','Hydrate well: 500ml before session, 250ml every 20 minutes','Recovery day after high-intensity sessions','Sleep: 9 hours per night for peak physical development']},
+adult:{title:'Senior Player Conditioning',weeks:[
+  {week:1,focus:'Pre-Season Power Development',sessions:[
+    {name:'Max Sprint Work',dur:'50 min',drills:['General warm-up: 10 minutes','6 x 60m sprints @ 95% — full 2 minutes rest between','4 x Depth Jumps (40cm box): drop, land, immediately jump — 4 x 6','Core Finisher: plank 60s, side plank 30s each, dead bug 10 reps x 3']},
+    {name:'Strength & Power',dur:'50 min',drills:['Barbell Squat: 4 x 6 at 75% 1RM — prioritise depth','Romanian Deadlift: 3 x 8 — control the descent','Plyometric Push-Ups: 3 x 8 — explosive push off ground','Farmer's Walk: 4 x 20m with heavy dumbbells or kettlebells']}]},
+  {week:2,focus:'Match-Specific Conditioning',sessions:[
+    {name:'Repeated Sprint Training',dur:'45 min',drills:['8 x 30m sprints with 25 seconds active recovery','4 x 150m at 85%+ with 90 seconds full rest','Bleep Test Protocol to Level 10+ — record your level each week']},
+    {name:'Technical Conditioning',dur:'50 min',drills:['Solo 40m + turn + shoot circuit x 10 reps','7v7 High-Press Game: 3 x 8 minutes with 2 minute rest','End session with 11v11 phase play: 15 minutes full intensity']}]},
+  {week:3,focus:'Recovery & Maintenance',sessions:[
+    {name:'Active Recovery Day',dur:'35 min',drills:['Light jog: 15 minutes at comfortable pace','Foam rolling: quads, hamstrings, IT band, upper back','Yoga-style stretching: hip flexors, hamstrings, chest, shoulders','Ice bath (10C) or contrast shower: 2 min cold / 1 min warm x 3']}]}],
+tips:['GPS load monitoring recommended — track weekly load','Hard/easy day principle: never two hard sessions back-to-back','Sleep 8+ hours: the most underrated performance tool','Pre-match meal: complex carbs 3 hours before; banana 30 minutes before','Post-match recovery: protein within 30 minutes, sleep by midnight']}
+};
+
+var FMNS={hurling:[
+  {n:'3-3-2-1-1-1',p:[[.5,.92],[.25,.78],[.5,.78],[.75,.78],[.2,.62],[.5,.62],[.8,.62],[.35,.48],[.65,.48],[.25,.34],[.5,.34],[.75,.34],[.3,.2],[.5,.2],[.7,.2]]},
+  {n:'2-3-2-3',p:[[.5,.92],[.3,.78],[.7,.78],[.2,.64],[.5,.64],[.8,.64],[.35,.5],[.65,.5],[.2,.35],[.5,.35],[.8,.35],[.3,.2],[.5,.2],[.7,.2],[.5,.08]]},
+  {n:'4-4-2 Defensive',p:[[.5,.92],[.2,.75],[.4,.75],[.6,.75],[.8,.75],[.2,.55],[.4,.55],[.6,.55],[.8,.55],[.35,.35],[.65,.35],[.2,.18],[.5,.18],[.8,.18],[.5,.08]]}
+],football:[
+  {n:'2-3-1-3',p:[[.5,.92],[.3,.78],[.7,.78],[.2,.62],[.5,.62],[.8,.62],[.5,.48],[.2,.33],[.5,.33],[.8,.33],[.3,.18],[.5,.12],[.7,.18],[.25,.75],[.75,.75]]},
+  {n:'2-3-2-1-2',p:[[.5,.92],[.3,.78],[.7,.78],[.2,.64],[.5,.64],[.8,.64],[.35,.5],[.65,.5],[.5,.38],[.3,.23],[.7,.23],[.25,.75],[.75,.75],[.5,.12],[.5,.2]]},
+  {n:'1-4-2-2-1 Defensive',p:[[.5,.92],[.2,.75],[.4,.75],[.6,.75],[.8,.75],[.35,.58],[.65,.58],[.3,.42],[.7,.42],[.2,.25],[.5,.25],[.8,.25],[.5,.12],[.3,.15],[.7,.15]]}
+]};
+var PL=['GK','FB','CB','HB','HB','MF','MF','HF','HF','FF','FF','FF','FF','FF','FF'];
+
+function showSc(n){
+  document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.ni').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('sc-'+n).classList.add('active');
+  var nm={home:0,drills:1,tactical:2,fitness:3,session:4};
+  if(nm[n]!==undefined) document.querySelectorAll('.ni')[nm[n]].classList.add('active');
+  if(n==='drills') renderDrills();
+  if(n==='tactical') setTimeout(initTac,50);
+  if(n==='fitness') renderFit();
+}
+
+function setSport(s){
+  CS=s;
+  document.getElementById('hBtn').className='sb'+(s==='hurling'?' active':'');
+  document.getElementById('fBtn').className='sb'+(s==='football'?' active':'');
+  if(document.getElementById('sc-drills').classList.contains('active')) renderDrills();
+}
+
+function setAge(a,el){
+  CA=a;
+  document.querySelectorAll('#sc-drills .pt').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  renderDrills();
+}
+
+function setCat(c,el){
+  CC=c;
+  document.querySelectorAll('.fc').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  renderDrills();
+}
+
+function getFiltered(){
+  return DRILLS.filter(function(d){
+    var sm=d.sport===CS||d.sport==='both';
+    var am=CA==='all'||d.age.indexOf(CA)>=0;
+    var cm=CC==='all'||d.cat===CC;
+    return sm&&am&&cm;
+  });
+}
+
+function bc(cat){
+  var m={skill:'bgg',shooting:'bgr',passing:'bgb',fitness:'bgp',tactical:'bgo',warmup:'bgb',game:'bgg'};
+  return m[cat]||'bgg';
+}
+
+function renderDrills(){
+  var list=document.getElementById('drillList');
+  var f=getFiltered();
+  if(!f.length){
+    list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);"><div style="font-size:2rem;margin-bottom:10px;">🔍</div><p>No drills match this filter.</p></div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<f.length;i++){
+    var d=f[i];
+    var sc=d.sport==='football'?' football':d.sport==='both'?' both':'';
+    var sl=d.sport==='both'?'Both':d.sport.charAt(0).toUpperCase()+d.sport.slice(1);
+    var cl=d.cat.charAt(0).toUpperCase()+d.cat.slice(1);
+    var al=d.age[0].toUpperCase()+'+';
+    var desc=d.desc.length>110?d.desc.substring(0,110)+'...':d.desc;
+    html+='<div class="dc'+sc+'" onclick="openDrill('+d.id+')"><div class="dinfo">';
+    html+='<div class="dbs"><span class="bg bgg">'+sl+'</span><span class="bg '+bc(d.cat)+'">'+cl+'</span><span class="bg bgb">'+al+'</span></div>';
+    html+='<div class="dtit">'+d.title+'</div><div class="ddesc">'+desc+'</div>';
+    html+='</div></div>';
+  }
+  list.innerHTML=html;
+}
+
+function openDrill(id){
+  var d=null;
+  for(var i=0;i<DRILLS.length;i++){if(DRILLS[i].id===id){d=DRILLS[i];break;}}
+  if(!d) return;
+  var sl=d.sport==='both'?'Both':d.sport.charAt(0).toUpperCase()+d.sport.slice(1);
+  var cl=d.cat.charAt(0).toUpperCase()+d.cat.slice(1);
+  var al=d.age.join(', ').toUpperCase();
+  var pts='',prg='';
+  for(var i=0;i<d.pts.length;i++) pts+='<li>'+d.pts[i]+'</li>';
+  for(var i=0;i<d.prog.length;i++) prg+='<li>'+d.prog[i]+'</li>';
+  document.getElementById('mBody').innerHTML=
+    '<div class="mtit">'+d.title+'</div>'+
+    '<div class="dbs" style="margin-bottom:10px;"><span class="bg bgg">'+sl+'</span><span class="bg '+bc(d.cat)+'">'+cl+'</span><span class="bg bgb">'+al+'</span></div>'+
+    '<p style="font-size:.8rem;color:var(--mid);line-height:1.6;margin-bottom:12px;">'+d.desc+'</p>'+
+    '<div class="sl">Coaching Points</div><ul class="dpts">'+pts+'</ul>'+
+    '<div class="sl">Progressions</div><ul class="dpts">'+prg+'</ul>';
+  document.getElementById('modal').classList.add('open');
+}
+
+function initTac(){
+  TC=document.getElementById('tc');
+  TW=TC.parentElement.clientWidth-20;
+  TH=Math.round(TW*1.65);
+  TC.width=TW; TC.height=TH;
+  TX=TC.getContext('2d');
+  renderFms(); drawTac();
+  TC.removeEventListener('pointerdown',tacDn);
+  TC.removeEventListener('pointermove',tacMv);
+  TC.removeEventListener('pointerup',tacUp);
+  TC.addEventListener('pointerdown',tacDn);
+  TC.addEventListener('pointermove',tacMv);
+  TC.addEventListener('pointerup',tacUp);
+}
+
+function renderFms(){
+  var row=document.getElementById('fmRow');
+  var fms=FMNS[TS];
+  var h='';
+  for(var i=0;i<fms.length;i++) h+='<div class="fmc" onclick="applyFm('+i+',this)">'+fms[i].n+'</div>';
+  row.innerHTML=h;
+}
+
+function applyFm(idx,el){
+  document.querySelectorAll('.fmc').forEach(function(c){c.classList.remove('active');});
+  el.classList.add('active');
+  var f=FMNS[TS][idx];
+  TP=[];
+  for(var i=0;i<f.p.length;i++) TP.push({x:f.p[i][0]*TW,y:f.p[i][1]*TH,label:PL[i],color:PC});
+  TB2=[{x:TW*.5,y:TH*.5}]; TL=[]; TZ=[];
+  drawTac();
+}
+
+function setTS(s,el){
+  TS=s;
+  document.querySelectorAll('#sc-tactical .pt').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  TP=[];TB2=[];TL=[];TZ=[];
+  renderFms(); drawTac();
+}
+
+function setTool(t,el){
+  TOOL=t;
+  document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+}
+
+function setPC(c,el){
+  PC=c;
+  document.querySelectorAll('.cd').forEach(function(d){d.classList.remove('sel');});
+  el.classList.add('sel');
+}
+
+function getXY(e){
+  var r=TC.getBoundingClientRect();
+  var sx=TW/r.width,sy=TH/r.height;
+  return {x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};
+}
+
+function tacDn(e){
+  e.preventDefault();
+  var p=getXY(e);
+  if(TOOL==='player'){
+    var hi=-1;
+    for(var i=0;i<TP.length;i++){if(Math.hypot(TP[i].x-p.x,TP[i].y-p.y)<18){hi=i;break;}}
+    if(hi>=0){DI=hi;DT='player';}
+    else{TP.push({x:p.x,y:p.y,label:String(TP.length+1),color:PC});drawTac();}
+  } else if(TOOL==='ball'){
+    var hi=-1;
+    for(var i=0;i<TB2.length;i++){if(Math.hypot(TB2[i].x-p.x,TB2[i].y-p.y)<14){hi=i;break;}}
+    if(hi>=0){DI=hi;DT='ball';}
+    else{TB2.push({x:p.x,y:p.y});drawTac();}
+  } else if(TOOL==='draw'||TOOL==='arrow'){
+    DRAW=true; DP=[{x:p.x,y:p.y}];
+  } else if(TOOL==='zone'){
+    TZ.push({x:p.x-40,y:p.y-30,w:80,h:60}); drawTac();
+  }
+}
+
+function tacMv(e){
+  e.preventDefault();
+  if(!DRAW&&DI===null) return;
+  var p=getXY(e);
+  if(DT==='player'&&DI!==null){TP[DI].x=p.x;TP[DI].y=p.y;drawTac();}
+  else if(DT==='ball'&&DI!==null){TB2[DI].x=p.x;TB2[DI].y=p.y;drawTac();}
+  else if(DRAW){
+    DP.push({x:p.x,y:p.y});
+    drawTac();
+    TX.strokeStyle='rgba(255,255,100,.8)';TX.lineWidth=2;TX.beginPath();
+    TX.moveTo(DP[DP.length-2].x,DP[DP.length-2].y);
+    TX.lineTo(p.x,p.y);TX.stroke();
+  }
+}
+
+function tacUp(e){
+  e.preventDefault();
+  if(DRAW&&DP.length>1){TL.push({path:DP.slice(),type:TOOL});DRAW=false;DP=[];drawTac();}
+  DI=null;DT=null;
+}
+
+function drawTac(){
+  if(!TC) return;
+  TX.clearRect(0,0,TW,TH);
+  TX.fillStyle='#2a7a2a';TX.fillRect(0,0,TW,TH);
+  for(var i=0;i<8;i++){TX.fillStyle=i%2===0?'rgba(0,0,0,.05)':'transparent';TX.fillRect(0,i*TH/8,TW,TH/8);}
+  TX.strokeStyle='rgba(255,255,255,.7)';TX.lineWidth=2;
+  TX.strokeRect(TW*.04,TH*.03,TW*.92,TH*.94);
+  TX.beginPath();TX.moveTo(TW*.04,TH*.5);TX.lineTo(TW*.96,TH*.5);TX.stroke();
+  TX.beginPath();TX.arc(TW*.5,TH*.5,TW*.08,0,Math.PI*2);TX.stroke();
+  var yps=[.22,.78];
+  for(var i=0;i<yps.length;i++){TX.beginPath();TX.moveTo(TW*.04,TH*yps[i]);TX.lineTo(TW*.96,TH*yps[i]);TX.strokeStyle='rgba(255,255,255,.4)';TX.stroke();TX.strokeStyle='rgba(255,255,255,.7)';}
+  var gw=TW*.15,gx=(TW-gw)/2;
+  var gys=[TH*.03,TH*.97-TH*.06];
+  for(var i=0;i<gys.length;i++){
+    TX.strokeRect(gx,gys[i],gw,TH*.06);
+    var sw=gw*.5,sx=(TW-sw)/2;
+    TX.strokeStyle='rgba(255,255,255,.4)';TX.strokeRect(sx,gys[i],sw,TH*.035);TX.strokeStyle='rgba(255,255,255,.7)';
+  }
+  TX.fillStyle='rgba(255,255,255,.7)';
+  var pys=[TH*.14,TH*.86];
+  for(var i=0;i<pys.length;i++){TX.beginPath();TX.arc(TW*.5,pys[i],3,0,Math.PI*2);TX.fill();}
+  for(var i=0;i<TZ.length;i++){
+    var z=TZ[i];TX.fillStyle='rgba(255,184,0,.15)';TX.strokeStyle='rgba(255,184,0,.5)';
+    TX.lineWidth=1.5;TX.setLineDash([4,3]);TX.fillRect(z.x,z.y,z.w,z.h);TX.strokeRect(z.x,z.y,z.w,z.h);TX.setLineDash([]);
+  }
+  for(var i=0;i<TL.length;i++){
+    var l=TL[i];if(l.path.length<2) continue;
+    TX.strokeStyle='rgba(255,255,100,.8)';TX.lineWidth=2;TX.setLineDash([]);
+    TX.beginPath();
+    for(var j=0;j<l.path.length;j++){if(j===0)TX.moveTo(l.path[j].x,l.path[j].y);else TX.lineTo(l.path[j].x,l.path[j].y);}
+    TX.stroke();
+    if(l.type==='arrow'){
+      var last=l.path[l.path.length-1],prev=l.path[l.path.length-2];
+      var a=Math.atan2(last.y-prev.y,last.x-prev.x);
+      TX.fillStyle='rgba(255,255,100,.8)';TX.beginPath();
+      TX.moveTo(last.x,last.y);TX.lineTo(last.x-10*Math.cos(a-.4),last.y-10*Math.sin(a-.4));TX.lineTo(last.x-10*Math.cos(a+.4),last.y-10*Math.sin(a+.4));TX.closePath();TX.fill();
+    }
+  }
+  for(var i=0;i<TB2.length;i++){
+    var b=TB2[i];TX.fillStyle='#fff';TX.beginPath();TX.arc(b.x,b.y,9,0,Math.PI*2);TX.fill();
+    TX.strokeStyle='rgba(0,0,0,.3)';TX.lineWidth=1;TX.beginPath();TX.arc(b.x,b.y,9,0,Math.PI*2);TX.stroke();
+  }
+  for(var i=0;i<TP.length;i++){
+    var p=TP[i];TX.fillStyle=p.color;TX.beginPath();TX.arc(p.x,p.y,14,0,Math.PI*2);TX.fill();
+    TX.strokeStyle='#fff';TX.lineWidth=2;TX.beginPath();TX.arc(p.x,p.y,14,0,Math.PI*2);TX.stroke();
+    TX.fillStyle='#fff';TX.font='bold 9px Oswald,sans-serif';TX.textAlign='center';TX.textBaseline='middle';
+    TX.fillText(p.label,p.x,p.y+.5);TX.textAlign='start';TX.textBaseline='alphabetic';
+  }
+}
+
+function clearBoard(){TP=[];TL=[];TB2=[];TZ=[];drawTac();showToast('Board cleared');}
+function saveBoard(){localStorage.setItem('wt_board',JSON.stringify({TP:TP,TL:TL,TB2:TB2,TZ:TZ,TS:TS}));showToast('Board saved ✓');}
+function loadBoard(){
+  var d=localStorage.getItem('wt_board');
+  if(!d){showToast('No saved board');return;}
+  var b=JSON.parse(d);
+  TP=b.TP||[];TL=b.TL||[];TB2=b.TB2||[];TZ=b.TZ||[];
+  drawTac();showToast('Board loaded ✓');
+}
+
+function setFA(a,el){
+  CFA=a;
+  document.querySelectorAll('#sc-fitness .pt').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  renderFit();
+}
+
+function renderFit(){
+  var p=FITNESS[CFA];
+  var h='<div style="background:linear-gradient(135deg,var(--gd),var(--green));border-radius:var(--r);padding:14px;margin-bottom:14px;color:#fff;">';
+  h+='<div style="font-family:Oswald,sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;">'+p.title+'</div>';
+  h+='<div style="font-size:.78rem;opacity:.85;">'+p.weeks.length+'-week progressive programme</div></div>';
+  for(var wi=0;wi<p.weeks.length;wi++){
+    var w=p.weeks[wi];
+    h+='<div style="background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px;">';
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
+    h+='<div style="background:var(--gold);color:var(--gd);font-family:Oswald,sans-serif;font-weight:700;font-size:.9rem;padding:4px 12px;border-radius:20px;">Week '+w.week+'</div>';
+    h+='<div style="font-family:Oswald,sans-serif;font-size:.9rem;color:var(--gd);font-weight:600;">'+w.focus+'</div></div>';
+    for(var si=0;si<w.sessions.length;si++){
+      var s=w.sessions[si];
+      h+='<div style="background:var(--ow);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid var(--green);">';
+      h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">';
+      h+='<div style="font-weight:600;font-size:.82rem;">'+s.name+'</div>';
+      h+='<div style="font-size:.7rem;background:var(--green);color:#fff;padding:2px 8px;border-radius:10px;font-weight:600;">'+s.dur+'</div></div>';
+      h+='<ul style="list-style:none;">';
+      for(var di=0;di<s.drills.length;di++) h+='<li style="font-size:.75rem;color:var(--mid);padding-left:12px;position:relative;line-height:1.5;margin-bottom:2px;"><span style="position:absolute;left:0;color:var(--gold);">&#9658;</span>'+s.drills[di]+'</li>';
+      h+='</ul></div>';
+    }
+    h+='</div>';
+  }
+  h+='<div style="background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);">';
+  h+='<div style="font-family:Oswald,sans-serif;font-size:.85rem;font-weight:600;color:var(--gd);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Coach Tips</div>';
+  for(var ti=0;ti<p.tips.length;ti++) h+='<div style="font-size:.78rem;color:var(--mid);padding:5px 0;border-bottom:1px solid var(--ow);display:flex;gap:8px;"><span style="color:var(--gold);flex-shrink:0;">&#9733;</span>'+p.tips[ti]+'</div>';
+  h+='</div>';
+  document.getElementById('fitContent').innerHTML=h;
+}
+
+var BTYPES=['Warm-Up','Technical Skill','Tactical Work','Conditioned Game','Fitness','Cool-Down','Team Talk','Video Review'];
+
+function addBlock(){SB.push({type:'Warm-Up',notes:'',duration:15});renderBlocks();}
+
+function renderBlocks(){
+  var c=document.getElementById('sesBlocks');
+  if(!SB.length){c.innerHTML='';return;}
+  var total=0;for(var i=0;i<SB.length;i++) total+=SB[i].duration;
+  var h='';
+  for(var i=0;i<SB.length;i++){
+    var b=SB[i];
+    h+='<div style="background:#fff;border-radius:var(--r);padding:12px;box-shadow:var(--sh);margin-bottom:10px;border-left:4px solid var(--green);">';
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+    h+='<select onchange="SB['+i+'].type=this.value" style="flex:1;border:1.5px solid var(--lg);border-radius:8px;padding:6px;font-size:.8rem;font-family:Inter,sans-serif;outline:none;">';
+    for(var j=0;j<BTYPES.length;j++) h+='<option'+(BTYPES[j]===b.type?' selected':'')+'>'+BTYPES[j]+'</option>';
+    h+='</select>';
+    h+='<input type="number" value="'+b.duration+'" min="5" max="60" step="5" onchange="SB['+i+'].duration=+this.value;renderBlocks()" style="width:55px;border:1.5px solid var(--lg);border-radius:8px;padding:6px;font-size:.8rem;text-align:center;outline:none;">';
+    h+='<span style="font-size:.7rem;color:var(--mid);">min</span>';
+    h+='<button onclick="SB.splice('+i+',1);renderBlocks()" style="background:#ffeeee;border:none;border-radius:6px;padding:5px 8px;cursor:pointer;color:#c00;font-size:.8rem;">&#10005;</button>';
+    h+='</div>';
+    h+='<textarea placeholder="Drills, coaching points, notes..." onchange="SB['+i+'].notes=this.value" style="width:100%;border:1.5px solid var(--lg);border-radius:8px;padding:8px;font-size:.78rem;font-family:Inter,sans-serif;resize:none;height:60px;outline:none;">'+b.notes+'</textarea>';
+    h+='</div>';
+  }
+  h+='<div style="text-align:right;font-size:.8rem;color:var(--mid);font-weight:600;margin-top:-4px;">Total: <span style="color:var(--gd);">'+total+' min</span></div>';
+  c.innerHTML=h;
+}
+
+function saveSession(){
+  var title=document.getElementById('sesTitle').value.trim();
+  if(!title){showToast('Add a session title first');return;}
+  var s={id:Date.now(),title:title,age:document.getElementById('sesAge').value,sport:document.getElementById('sesSport').value,duration:document.getElementById('sesDur').value,blocks:SB.slice(),date:new Date().toLocaleDateString('en-IE')};
+  var saved=JSON.parse(localStorage.getItem('wt_sessions')||'[]');
+  saved.push(s);localStorage.setItem('wt_sessions',JSON.stringify(saved));
+  showToast('Session saved ✓');
+  document.getElementById('sesTitle').value='';SB=[];renderBlocks();
+}
+
+function showSaved(){
+  var saved=JSON.parse(localStorage.getItem('wt_sessions')||'[]');
+  var c=document.getElementById('savedList');
+  if(!saved.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--mid);">No saved sessions yet</div>';return;}
+  var h='<p class="stit">Saved Sessions</p>';
+  var rev=saved.slice().reverse();
+  for(var i=0;i<rev.length;i++){
+    var s=rev[i];
+    h+='<div style="background:#fff;border-radius:var(--r);padding:12px;box-shadow:var(--sh);margin-bottom:10px;">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">';
+    h+='<div style="font-family:Oswald,sans-serif;font-weight:600;font-size:.95rem;color:var(--gd);">'+s.title+'</div>';
+    h+='<button onclick="delSes('+s.id+')" style="background:none;border:none;color:#c00;cursor:pointer;font-size:.8rem;">&#128465;</button></div>';
+    h+='<div style="font-size:.72rem;color:var(--mid);">'+(s.sport||'—')+' · '+(s.age||'All ages')+' · '+(s.duration||'—')+' · '+s.date+'</div>';
+    h+='<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">';
+    var bl=s.blocks||[];
+    for(var j=0;j<bl.length;j++) h+='<span style="background:var(--ow);font-size:.65rem;padding:2px 8px;border-radius:10px;color:var(--mid);">'+bl[j].type+' '+bl[j].duration+'min</span>';
+    h+='</div></div>';
+  }
+  c.innerHTML=h;
+}
+
+function delSes(id){
+  var saved=JSON.parse(localStorage.getItem('wt_sessions')||'[]').filter(function(s){return s.id!==id;});
+  localStorage.setItem('wt_sessions',JSON.stringify(saved));
+  showSaved();showToast('Session deleted');
+}
+
+function showToast(m){
+  var t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// Init
+renderDrills();
+renderFit();
+</script>
+</body>
+</html>
